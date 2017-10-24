@@ -7,6 +7,9 @@ import java.util.Objects;
 public abstract class Entity implements Cloneable, Serializable {
     private int id;
 
+    public Entity() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
