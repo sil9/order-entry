@@ -1,7 +1,7 @@
 package com.netcracker.selyutin.dao;
 
 
-import com.netcracker.selyutin.entities.Entity;
+import com.netcracker.selyutin.entities.Order;
 import com.netcracker.selyutin.util.EntityManagerUtil;
 
 import javax.persistence.EntityManager;
@@ -9,20 +9,20 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
+public class OrderDaoImpl implements OrderDao{
 
     private EntityManager entityManager = EntityManagerUtil.getInstance().getEntityManager();
-    private Class<T> tClass;
 
-    GenericDao(Class<T> tClass) {
-        this.tClass = tClass;
+    private OrderDaoImpl() {
+
     }
 
-    public void add(T entity) {
+    @Override
+    public void add(Order order) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            entityManager.persist(entity);
+            entityManager.persist(order);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -30,11 +30,12 @@ public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
         }
     }
 
-    public void update(T entity) {
+    @Override
+    public void update(Order order) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            entityManager.merge(entity);
+            entityManager.merge(order);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,11 +43,12 @@ public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
         }
     }
 
-    public void delete(T entity) {
+    @Override
+    public void delete(Order order) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            entityManager.remove(entity);
+            entityManager.remove(order);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,30 +56,41 @@ public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
         }
     }
 
+    @Override
     public void delete(int id) {
-        T entity = getById(id);
-        delete(entity);
+        Order order = getById(id);
+        delete(order);
     }
 
-    public T getById(int id) {
-        T entity = null;
+    @Override
+    public Order getById(int id) {
+        Order order = null;
         try {
-            entity = entityManager.find(tClass, id);
+            order = entityManager.find(Order.class, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return entity;
+        return order;
     }
 
-    public List<T> getAll() {
-        List<T> resultList = null;
+    @Override
+    public List<Order> getAll() {
+        List<Order> resultList = null;
         try {
-            CriteriaQuery<T> criteria = entityManager.getCriteriaBuilder().createQuery(tClass);
-            criteria.select(criteria.from(tClass));
+            CriteriaQuery<Order> criteria = entityManager.getCriteriaBuilder().createQuery(Order.class);
+            criteria.select(criteria.from(Order.class));
             resultList = entityManager.createQuery(criteria).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    private static class Holder {
+        private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
+    }
+
+    public OrderDaoImpl getInstance() {
+        return Holder.INSTANCE;
     }
 }
