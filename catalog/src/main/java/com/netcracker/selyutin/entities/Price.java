@@ -1,10 +1,17 @@
 package com.netcracker.selyutin.entities;
 
 
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
+@javax.persistence.Entity
 public class Price extends Entity {
+
     private long value;
+
+    @OneToOne(mappedBy = "price", fetch = FetchType.LAZY)
+    private Offer offer;
 
     public Price() {
     }

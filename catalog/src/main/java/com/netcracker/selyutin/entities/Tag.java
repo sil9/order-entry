@@ -1,13 +1,19 @@
 package com.netcracker.selyutin.entities;
 
 
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@javax.persistence.Entity
 public class Tag extends Entity {
+
     private String sign;
-    private Set<Offer> offers = new HashSet<Offer>();
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Offer> offers = new HashSet<>();
 
     public Tag() {
     }
@@ -18,13 +24,12 @@ public class Tag extends Entity {
         if (!(o instanceof Tag)) return false;
         if (!super.equals(o)) return false;
         Tag tag = (Tag) o;
-        return Objects.equals(sign, tag.sign) &&
-                Objects.equals(offers, tag.offers);
+        return Objects.equals(sign, tag.sign);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), sign, offers);
+        return Objects.hash(super.hashCode(), sign);
     }
 
     public String getSign() {
@@ -45,10 +50,9 @@ public class Tag extends Entity {
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "id='" + getId() +
-                ", sign='" + sign + '\'' +
-                ", offers=" + offers +
-                '}';
+        final StringBuilder sb = new StringBuilder("Tag{");
+        sb.append("sign='").append(sign).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

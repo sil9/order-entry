@@ -1,13 +1,19 @@
 package com.netcracker.selyutin.entities;
 
 
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@javax.persistence.Entity
 public class Category extends Entity {
+
     private String name;
-    private Set<Offer> offers = new HashSet<Offer>();
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private Set<Offer> offers = new HashSet<>();
 
     public Category() {
     }
@@ -18,13 +24,12 @@ public class Category extends Entity {
         if (!(o instanceof Category)) return false;
         if (!super.equals(o)) return false;
         Category category = (Category) o;
-        return Objects.equals(name, category.name) &&
-                Objects.equals(offers, category.offers);
+        return Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, offers);
+        return Objects.hash(super.hashCode(), name);
     }
 
     public String getName() {
@@ -45,10 +50,9 @@ public class Category extends Entity {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id='" + getId() + '\'' +
-                ", name='" + name + '\'' +
-                ", offers=" + offers +
-                '}';
+        final StringBuilder sb = new StringBuilder("Category{");
+        sb.append("name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

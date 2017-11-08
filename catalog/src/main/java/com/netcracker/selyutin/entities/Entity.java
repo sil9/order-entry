@@ -1,10 +1,17 @@
 package com.netcracker.selyutin.entities;
 
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
 
+@MappedSuperclass
 public abstract class Entity implements Cloneable, Serializable {
+
+    @Id
+    @GeneratedValue
     private int id;
 
     public Entity() {
