@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <jdk.version>1.8</jdk.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
     </properties>
@@ -36,5 +37,18 @@
             <version>1.0.0.Final</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
