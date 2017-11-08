@@ -5,6 +5,7 @@ import com.netcracker.selyutin.entities.Entity;
 import com.netcracker.selyutin.util.EntityManagerUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
@@ -18,35 +19,38 @@ public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
     }
 
     public void add(T entity) {
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            entityManager.getTransaction().begin();
+            transaction.begin();
             entityManager.persist(entity);
-            entityManager.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
+            transaction.rollback();
         }
     }
 
     public void update(T entity) {
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            entityManager.getTransaction().begin();
+            transaction.begin();
             entityManager.merge(entity);
-            entityManager.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
+            transaction.rollback();
         }
     }
 
     public void delete(T entity) {
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            entityManager.getTransaction().begin();
+            transaction.begin();
             entityManager.remove(entity);
-            entityManager.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
+            transaction.rollback();
         }
     }
 
