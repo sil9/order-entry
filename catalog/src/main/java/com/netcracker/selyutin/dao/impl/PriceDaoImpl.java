@@ -14,7 +14,7 @@ public class PriceDaoImpl extends GenericDao<Price> implements PriceDao {
         private final static PriceDaoImpl INSTANCE = new PriceDaoImpl();
     }
 
-    public PriceDaoImpl getInstance() {
+    public static PriceDaoImpl getInstance() {
         return Holder.INSTANCE;
     }
 }

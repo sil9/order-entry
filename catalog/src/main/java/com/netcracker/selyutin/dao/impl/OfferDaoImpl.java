@@ -14,7 +14,7 @@ public class OfferDaoImpl extends GenericDao<Offer> implements OfferDao {
         private final static OfferDaoImpl INSTANCE = new OfferDaoImpl();
     }
 
-    public OfferDaoImpl getInstance() {
+    public static OfferDaoImpl getInstance() {
         return Holder.INSTANCE;
     }
 }

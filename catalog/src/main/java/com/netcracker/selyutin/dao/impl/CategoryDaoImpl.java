@@ -14,7 +14,7 @@ public class CategoryDaoImpl extends GenericDao<Category> implements CategoryDao
         private final static CategoryDaoImpl INSTANCE = new CategoryDaoImpl();
     }
 
-    public CategoryDaoImpl getInstance() {
+    public static CategoryDaoImpl getInstance() {
         return Holder.INSTANCE;
     }
 }

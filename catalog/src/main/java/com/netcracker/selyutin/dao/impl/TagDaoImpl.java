@@ -14,7 +14,7 @@ public class TagDaoImpl extends GenericDao<Tag> implements TagDao {
         private final static TagDaoImpl INSTANCE = new TagDaoImpl();
     }
 
-    public TagDaoImpl getInstance() {
+    public static TagDaoImpl getInstance() {
         return Holder.INSTANCE;
     }
 }

@@ -90,7 +90,7 @@ public class OrderDaoImpl implements OrderDao{
         private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
     }
 
-    public OrderDaoImpl getInstance() {
+    public static OrderDaoImpl getInstance() {
         return Holder.INSTANCE;
     }
 }
