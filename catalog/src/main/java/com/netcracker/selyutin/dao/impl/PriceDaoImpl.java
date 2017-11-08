@@ -2,7 +2,7 @@ package com.netcracker.selyutin.dao.impl;
 
 
 import com.netcracker.selyutin.dao.PriceDao;
-import com.netcracker.selyutin.entities.Price;
+import com.netcracker.selyutin.entity.Price;
 
 public class PriceDaoImpl extends GenericDao<Price> implements PriceDao {
 

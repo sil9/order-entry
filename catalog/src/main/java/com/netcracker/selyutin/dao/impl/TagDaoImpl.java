@@ -2,7 +2,7 @@ package com.netcracker.selyutin.dao.impl;
 
 
 import com.netcracker.selyutin.dao.TagDao;
-import com.netcracker.selyutin.entities.Tag;
+import com.netcracker.selyutin.entity.Tag;
 
 public class TagDaoImpl extends GenericDao<Tag> implements TagDao {
 

@@ -2,7 +2,7 @@ package com.netcracker.selyutin.dao.impl;
 
 
 import com.netcracker.selyutin.dao.CategoryDao;
-import com.netcracker.selyutin.entities.Category;
+import com.netcracker.selyutin.entity.Category;
 
 public class CategoryDaoImpl extends GenericDao<Category> implements CategoryDao {
 

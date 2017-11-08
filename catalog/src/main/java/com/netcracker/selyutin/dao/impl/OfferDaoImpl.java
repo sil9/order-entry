@@ -1,7 +1,7 @@
 package com.netcracker.selyutin.dao.impl;
 
 import com.netcracker.selyutin.dao.OfferDao;
-import com.netcracker.selyutin.entities.Offer;
+import com.netcracker.selyutin.entity.Offer;
 
 
 public class OfferDaoImpl extends GenericDao<Offer> implements OfferDao {

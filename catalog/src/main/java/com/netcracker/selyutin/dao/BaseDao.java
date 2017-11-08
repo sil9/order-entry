@@ -1,7 +1,7 @@
 package com.netcracker.selyutin.dao;
 
 
-import com.netcracker.selyutin.entities.Entity;
+import com.netcracker.selyutin.entity.Entity;
 
 import java.util.List;
 

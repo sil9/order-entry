@@ -2,7 +2,7 @@ package com.netcracker.selyutin.dao.impl;
 
 
 import com.netcracker.selyutin.dao.BaseDao;
-import com.netcracker.selyutin.entities.Entity;
+import com.netcracker.selyutin.entity.Entity;
 import com.netcracker.selyutin.util.EntityManagerUtil;
 
 import javax.persistence.EntityManager;

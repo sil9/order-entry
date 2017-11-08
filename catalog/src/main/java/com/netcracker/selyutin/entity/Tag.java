@@ -1,4 +1,4 @@
-package com.netcracker.selyutin.entities;
+package com.netcracker.selyutin.entity;
 
 
 import javax.persistence.FetchType;
