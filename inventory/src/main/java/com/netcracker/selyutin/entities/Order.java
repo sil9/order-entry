@@ -1,12 +1,20 @@
 package com.netcracker.selyutin.entities;
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity(name = "T_Order")
 public class Order {
+
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private String description;
@@ -15,6 +23,8 @@ public class Order {
     private String customerEmail;
     private LocalDate date;
     private String paymentSign;
+
+    @Transient
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
@@ -32,13 +42,12 @@ public class Order {
                 Objects.equals(description, order.description) &&
                 Objects.equals(customerEmail, order.customerEmail) &&
                 Objects.equals(date, order.date) &&
-                Objects.equals(paymentSign, order.paymentSign) &&
-                Objects.equals(orderItems, order.orderItems);
+                Objects.equals(paymentSign, order.paymentSign);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, totalPrice, itemsCount, customerEmail, date, paymentSign, orderItems);
+        return Objects.hash(id, name, description, totalPrice, itemsCount, customerEmail, date, paymentSign);
     }
 
     public int getId() {
@@ -124,7 +133,6 @@ public class Order {
                 ", customerEmail='" + customerEmail + '\'' +
                 ", date=" + date +
                 ", paymentSign='" + paymentSign + '\'' +
-                ", orderItems=" + orderItems +
                 '}';
     }
 }
