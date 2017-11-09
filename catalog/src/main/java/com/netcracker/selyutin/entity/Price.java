@@ -1,12 +1,13 @@
 package com.netcracker.selyutin.entity;
 
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import java.util.Objects;
 
-@javax.persistence.Entity
-public class Price extends Entity {
+@Entity
+public class Price extends IdentifiedEntity {
 
     private long value;
 

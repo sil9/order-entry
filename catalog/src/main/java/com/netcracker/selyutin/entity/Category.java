@@ -1,14 +1,15 @@
 package com.netcracker.selyutin.entity;
 
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@javax.persistence.Entity
-public class Category extends Entity {
+@Entity
+public class Category extends IdentifiedEntity {
 
     private String name;
 
@@ -50,9 +51,7 @@ public class Category extends Entity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Category{");
-        sb.append("name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Category{" + "name='" + name + '\'' +
+                '}';
     }
 }

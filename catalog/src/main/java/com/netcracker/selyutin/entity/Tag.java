@@ -1,14 +1,15 @@
 package com.netcracker.selyutin.entity;
 
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@javax.persistence.Entity
-public class Tag extends Entity {
+@Entity
+public class Tag extends IdentifiedEntity {
 
     private String sign;
 
@@ -50,9 +51,7 @@ public class Tag extends Entity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Tag{");
-        sb.append("sign='").append(sign).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Tag{" + "sign='" + sign + '\'' +
+                '}';
     }
 }

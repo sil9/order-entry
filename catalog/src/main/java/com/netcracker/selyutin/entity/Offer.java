@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@javax.persistence.Entity
-public class Offer extends Entity {
+@Entity
+public class Offer extends IdentifiedEntity {
 
     private String name;
 
@@ -99,11 +99,9 @@ public class Offer extends Entity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Offer{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", availability=").append(availability);
-        sb.append('}');
-        return sb.toString();
+        return "Offer{" + "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", availability=" + availability +
+                '}';
     }
 }

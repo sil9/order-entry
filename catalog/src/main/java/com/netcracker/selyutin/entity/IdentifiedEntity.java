@@ -8,21 +8,21 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class Entity implements Cloneable, Serializable {
+public abstract class IdentifiedEntity implements Cloneable, Serializable {
 
     @Id
     @GeneratedValue
     private int id;
 
-    public Entity() {
+    public IdentifiedEntity() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entity entity = (Entity) o;
-        return id == entity.id;
+        IdentifiedEntity IdentifiedEntity = (IdentifiedEntity) o;
+        return id == IdentifiedEntity.id;
     }
 
     @Override

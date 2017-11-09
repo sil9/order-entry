@@ -2,7 +2,7 @@ package com.netcracker.selyutin.dao.impl;
 
 
 import com.netcracker.selyutin.dao.BaseDao;
-import com.netcracker.selyutin.entity.Entity;
+import com.netcracker.selyutin.entity.IdentifiedEntity;
 import com.netcracker.selyutin.util.EntityManagerUtil;
 
 import javax.persistence.EntityManager;
@@ -10,7 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public abstract class GenericDao<T extends Entity> implements BaseDao<T> {
+public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<T> {
 
     private EntityManager entityManager = EntityManagerUtil.getInstance().getEntityManager();
     private Class<T> tClass;

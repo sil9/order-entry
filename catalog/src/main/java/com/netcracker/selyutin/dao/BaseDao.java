@@ -1,11 +1,11 @@
 package com.netcracker.selyutin.dao;
 
 
-import com.netcracker.selyutin.entity.Entity;
+import com.netcracker.selyutin.entity.IdentifiedEntity;
 
 import java.util.List;
 
-public interface BaseDao<T extends Entity> {
+public interface BaseDao<T extends IdentifiedEntity> {
 
     void add(T entity);
 
