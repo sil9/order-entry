@@ -1,21 +1,28 @@
-package com.netcracker.selyutin.entities;
+package com.netcracker.selyutin.entity;
 
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Entity implements Cloneable, Serializable {
+@MappedSuperclass
+public abstract class IdentifiedEntity implements Cloneable, Serializable {
+
+    @Id
+    @GeneratedValue
     private int id;
 
-    public Entity() {
+    public IdentifiedEntity() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entity entity = (Entity) o;
-        return id == entity.id;
+        IdentifiedEntity IdentifiedEntity = (IdentifiedEntity) o;
+        return id == IdentifiedEntity.id;
     }
 
     @Override

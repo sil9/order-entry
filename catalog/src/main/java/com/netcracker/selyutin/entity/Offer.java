@@ -1,17 +1,34 @@
-package com.netcracker.selyutin.entities;
+package com.netcracker.selyutin.entity;
 
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Offer extends Entity {
+@Entity
+public class Offer extends IdentifiedEntity {
+
     private String name;
+
     private String description;
+
     private boolean availability;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "price_id")
     private Price price;
-    private Set<Tag> tags = new HashSet<Tag>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Offer_Tag",
+            joinColumns = @JoinColumn(name = "offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
 
     public Offer() {
     }
@@ -24,15 +41,12 @@ public class Offer extends Entity {
         Offer offer = (Offer) o;
         return availability == offer.availability &&
                 Objects.equals(name, offer.name) &&
-                Objects.equals(description, offer.description) &&
-                Objects.equals(category, offer.category) &&
-                Objects.equals(price, offer.price) &&
-                Objects.equals(tags, offer.tags);
+                Objects.equals(description, offer.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, availability, category, price, tags);
+        return Objects.hash(super.hashCode(), name, description, availability);
     }
 
     public String getName() {
@@ -85,14 +99,9 @@ public class Offer extends Entity {
 
     @Override
     public String toString() {
-        return "Offer{" +
-                "id='" + getId() + '\'' +
-                ", name='" + name + '\'' +
+        return "Offer{" + "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", availability=" + availability +
-                ", category=" + category +
-                ", price=" + price +
-                ", tags=" + tags +
                 '}';
     }
 }
