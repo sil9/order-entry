@@ -1,17 +1,24 @@
 package com.netcracker.selyutin.dao.impl;
 
 
+import com.netcracker.selyutin.dao.OfferDao;
 import com.netcracker.selyutin.entity.Offer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import static org.junit.Assert.*;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class OfferDaoImplTest {
 
-    private OfferDaoImpl offerDao = OfferDaoImpl.getInstance();
+    @Autowired
+    private OfferDao offerDao;
 
     private Offer testOffer;
 
@@ -19,57 +26,43 @@ public class OfferDaoImplTest {
     public void setUp() throws Exception {
         testOffer = new Offer();
         testOffer.setName("name");
-        testOffer.setDescription("description");
+        offerDao.add(testOffer);
     }
 
     @After
     public void tearDown() throws Exception {
-        testOffer = null;
-    }
-
-    @Test
-    public void add() throws Exception {
-        offerDao.add(testOffer);
-        Offer orderFromDatabase = offerDao.getById(testOffer.getId());
-        offerDao.delete(orderFromDatabase);
-        assertNotNull(orderFromDatabase);
-        assertEquals(testOffer, orderFromDatabase);
-    }
-
-    @Test
-    public void update() throws Exception {
-        offerDao.add(testOffer);
-        Offer newOffer = new Offer();
-        newOffer.setName("new offer");
-        newOffer.setId(testOffer.getId());
-        offerDao.update(newOffer);
-        Offer updatableOrderFromDatabase = offerDao.getById(testOffer.getId());
-        assertEquals("new offer", updatableOrderFromDatabase.getName());
         offerDao.delete(testOffer.getId());
     }
 
     @Test
+    public void add() throws Exception {
+        int id = testOffer.getId();
+        assertNotNull(id);
+    }
+
+    @Test
+    public void update() throws Exception {
+        testOffer.setName("Changed Name");
+        offerDao.update(testOffer);
+        Offer offerFromDatabase = offerDao.getById(testOffer.getId());
+        assertNotNull(offerFromDatabase);
+        assertEquals("Changed Name", testOffer.getName());
+    }
+
+    @Test
     public void delete() throws Exception {
-        offerDao.add(testOffer);
-        offerDao.delete(testOffer);
-        Offer deletedOrder = offerDao.getById(testOffer.getId());
-        assertNull(deletedOrder);
+        Offer Offer = new Offer();
+        offerDao.add(Offer);
+        offerDao.delete(Offer.getId());
+        Offer offerFromDatabase = offerDao.getById(Offer.getId());
+        assertNull(offerFromDatabase);
     }
 
     @Test
     public void getAll() throws Exception {
-        offerDao.add(testOffer);
-        List<Offer> orders = offerDao.getAll();
-        assertNotNull(orders);
-        assertFalse(orders.size() == 0);
-        offerDao.delete(testOffer);
-    }
-
-    @Test
-    public void getInstance() throws Exception {
-        OfferDaoImpl firstInstance = OfferDaoImpl.getInstance();
-        OfferDaoImpl secondInstance = OfferDaoImpl.getInstance();
-        assertEquals(firstInstance.hashCode(), secondInstance.hashCode());
+        List<Offer> categories = offerDao.getAll();
+        assertNotNull(categories);
+        assertTrue(categories.size() == 1);
     }
 
 }

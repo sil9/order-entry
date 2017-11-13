@@ -5,78 +5,63 @@ import com.netcracker.selyutin.entities.Order;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.time.LocalDate;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import static org.junit.Assert.*;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class OrderDaoImplTest {
 
-    private OrderDaoImpl orderDao = OrderDaoImpl.getInstance();
+    @Autowired
+    private OrderDao OrderDao;
 
     private Order testOrder;
 
     @Before
     public void setUp() throws Exception {
         testOrder = new Order();
-        testOrder.setCustomerEmail("mail");
-        testOrder.setDate(LocalDate.now());
-        testOrder.setDescription("description");
-        testOrder.setItemsCount(3);
         testOrder.setName("name");
-        testOrder.setPaymentSign("sign");
-        testOrder.setTotalPrice(100);
+        OrderDao.add(testOrder);
     }
 
     @After
-    public void before() throws Exception {
-        testOrder = null;
+    public void tearDown() throws Exception {
+        OrderDao.delete(testOrder.getId());
     }
 
     @Test
     public void add() throws Exception {
-        orderDao.add(testOrder);
-        Order orderFromDatabase = orderDao.getById(testOrder.getId());
-        orderDao.delete(orderFromDatabase);
-        assertNotNull(orderFromDatabase);
-        assertEquals(testOrder, orderFromDatabase);
+        int id = testOrder.getId();
+        assertNotNull(id);
     }
 
     @Test
     public void update() throws Exception {
-        orderDao.add(testOrder);
-        Order newOrder = new Order();
-        newOrder.setName("new order");
-        newOrder.setId(testOrder.getId());
-        orderDao.update(newOrder);
-        Order updatableOrderFromDatabase = orderDao.getById(testOrder.getId());
-        assertEquals("new order", updatableOrderFromDatabase.getName());
-        orderDao.delete(testOrder.getId());
+        testOrder.setName("Changed Name");
+        OrderDao.update(testOrder);
+        Order orderFromDatabase = OrderDao.getById(testOrder.getId());
+        assertNotNull(orderFromDatabase);
+        assertEquals("Changed Name", testOrder.getName());
     }
 
     @Test
     public void delete() throws Exception {
-        orderDao.add(testOrder);
-        orderDao.delete(testOrder);
-        Order deletedOrder = orderDao.getById(testOrder.getId());
-        assertNull(deletedOrder);
+        Order Order = new Order();
+        OrderDao.add(Order);
+        OrderDao.delete(Order.getId());
+        Order orderFromDatabase = OrderDao.getById(Order.getId());
+        assertNull(orderFromDatabase);
     }
-
 
     @Test
     public void getAll() throws Exception {
-        orderDao.add(testOrder);
-        List<Order> orders = orderDao.getAll();
-        assertNotNull(orders);
-        assertFalse(orders.size() == 0);
-        orderDao.delete(testOrder);
-    }
-
-    @Test
-    public void getInstance() throws Exception {
-        OrderDaoImpl firstInstance = OrderDaoImpl.getInstance();
-        OrderDaoImpl secondInstance = OrderDaoImpl.getInstance();
-        assertEquals(firstInstance.hashCode(), secondInstance.hashCode());
+        List<Order> categories = OrderDao.getAll();
+        assertNotNull(categories);
+        assertTrue(categories.size() == 1);
     }
 
 }

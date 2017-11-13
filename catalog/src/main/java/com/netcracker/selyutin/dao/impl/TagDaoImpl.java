@@ -3,18 +3,13 @@ package com.netcracker.selyutin.dao.impl;
 
 import com.netcracker.selyutin.dao.TagDao;
 import com.netcracker.selyutin.entity.Tag;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class TagDaoImpl extends GenericDao<Tag> implements TagDao {
 
-    private TagDaoImpl() {
+    TagDaoImpl() {
         super(Tag.class);
     }
 
-    private static class Holder {
-        private final static TagDaoImpl INSTANCE = new TagDaoImpl();
-    }
-
-    public static TagDaoImpl getInstance() {
-        return Holder.INSTANCE;
-    }
 }

@@ -2,7 +2,6 @@ package com.netcracker.selyutin.dao;
 
 
 import com.netcracker.selyutin.entity.IdentifiedEntity;
-
 import java.util.List;
 
 public interface BaseDao<T extends IdentifiedEntity> {

@@ -7,41 +7,40 @@
     <groupId>com.netcracker.selyutin</groupId>
     <artifactId>order_entry</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+    </parent>
+
     <modules>
         <module>catalog</module>
         <module>inventory</module>
         <module>manager</module>
     </modules>
-    <packaging>pom</packaging>
 
     <properties>
         <jdk.version>1.8</jdk.version>
-        <hibernate.version>5.2.12.Final</hibernate.version>
-        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-        <junit.version>4.12</junit.version>
+        <postgre.version>9.1-901-1.jdbc4</postgre.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
+            <version>${postgre.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
