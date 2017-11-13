@@ -2,10 +2,16 @@ spring:
   datasource:
     username: postgres
     password: root
-    url: jdbc:postgresql://localhost:5432/inventory
+    url: jdbc:postgresql://localhost:5432/catalog
   jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
     hibernate:
       ddl-auto: validate
-    show-sql: true
-  jooq:
-    sql-dialect: org.hibernate.dialect.PostgreSQL95Dialect
+
+
+
+
