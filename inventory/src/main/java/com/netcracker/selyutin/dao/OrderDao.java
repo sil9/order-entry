@@ -2,7 +2,6 @@ package com.netcracker.selyutin.dao;
 
 
 import com.netcracker.selyutin.entities.Order;
-
 import java.util.List;
 
 public interface OrderDao {

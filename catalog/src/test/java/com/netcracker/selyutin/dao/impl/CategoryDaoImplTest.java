@@ -1,74 +1,68 @@
 package com.netcracker.selyutin.dao.impl;
 
 
+import com.netcracker.selyutin.dao.CategoryDao;
 import com.netcracker.selyutin.entity.Category;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import static org.junit.Assert.*;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class CategoryDaoImplTest {
-    
-    private CategoryDaoImpl categoryDao = CategoryDaoImpl.getInstance();
-    
+
+    @Autowired
+    private CategoryDao categoryDao;
+
     private Category testCategory;
 
     @Before
     public void setUp() throws Exception {
         testCategory = new Category();
         testCategory.setName("name");
+        categoryDao.add(testCategory);
     }
 
     @After
     public void tearDown() throws Exception {
-        testCategory = null;
-    }
-
-    @Test
-    public void add() throws Exception {
-        categoryDao.add(testCategory);
-        Category categoryFromDatabase = categoryDao.getById(testCategory.getId());
-        categoryDao.delete(categoryFromDatabase);
-        assertNotNull(categoryFromDatabase);
-        assertEquals(testCategory, categoryFromDatabase);
-    }
-
-    @Test
-    public void update() throws Exception {
-        categoryDao.add(testCategory);
-        Category newCategory = new Category();
-        newCategory.setName("new Category");
-        newCategory.setId(testCategory.getId());
-        categoryDao.update(newCategory);
-        Category updatableCategoryFromDatabase = categoryDao.getById(testCategory.getId());
-        assertEquals("new Category", updatableCategoryFromDatabase.getName());
         categoryDao.delete(testCategory.getId());
     }
 
     @Test
+    public void add() throws Exception {
+        int id = testCategory.getId();
+        assertNotNull(id);
+    }
+
+    @Test
+    public void update() throws Exception {
+        testCategory.setName("Changed Name");
+        categoryDao.update(testCategory);
+        Category categoryFromDatabase = categoryDao.getById(testCategory.getId());
+        assertNotNull(categoryFromDatabase);
+        assertEquals("Changed Name", testCategory.getName());
+    }
+
+    @Test
     public void delete() throws Exception {
-        categoryDao.add(testCategory);
-        categoryDao.delete(testCategory);
-        Category deletedCategory = categoryDao.getById(testCategory.getId());
-        assertNull(deletedCategory);
+        Category category = new Category();
+        categoryDao.add(category);
+        categoryDao.delete(category.getId());
+        Category categoryFromDatabase = categoryDao.getById(category.getId());
+        assertNull(categoryFromDatabase);
     }
 
     @Test
     public void getAll() throws Exception {
-        categoryDao.add(testCategory);
         List<Category> categories = categoryDao.getAll();
         assertNotNull(categories);
-        assertFalse(categories.size() == 0);
-        categoryDao.delete(testCategory);
-    }
-
-    @Test
-    public void getInstance() throws Exception {
-        CategoryDaoImpl firstInstance = CategoryDaoImpl.getInstance();
-        CategoryDaoImpl secondInstance = CategoryDaoImpl.getInstance();
-        assertEquals(firstInstance.hashCode(), secondInstance.hashCode());
+        assertTrue(categories.size() == 1);
     }
 
 }

@@ -2,61 +2,51 @@ package com.netcracker.selyutin.dao;
 
 
 import com.netcracker.selyutin.entities.Order;
-import com.netcracker.selyutin.util.EntityManagerUtil;
-
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public class OrderDaoImpl implements OrderDao{
+@Repository
+public class OrderDaoImpl implements OrderDao {
 
-    private EntityManager entityManager = EntityManagerUtil.getInstance().getEntityManager();
-
-    private OrderDaoImpl() {
-
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
+    @Transactional
     public void add(Order order) {
-        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction.begin();
             entityManager.persist(order);
-            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            transaction.rollback();
         }
     }
 
     @Override
+    @Transactional
     public void update(Order order) {
-        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction.begin();
             entityManager.merge(order);
-            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            transaction.rollback();
         }
     }
 
     @Override
+    @Transactional
     public void delete(Order order) {
-        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction.begin();
             entityManager.remove(order);
-            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            transaction.rollback();
         }
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         Order order = getById(id);
         delete(order);
@@ -86,11 +76,4 @@ public class OrderDaoImpl implements OrderDao{
         return resultList;
     }
 
-    private static class Holder {
-        private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
-    }
-
-    public static OrderDaoImpl getInstance() {
-        return Holder.INSTANCE;
-    }
 }
