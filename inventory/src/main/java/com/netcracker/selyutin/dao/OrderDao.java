@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface OrderDao {
 
-    void add(Order order);
+    Order add(Order order);
 
-    void update(Order order);
+    Order update(Order order);
 
     void delete(Order order);
 

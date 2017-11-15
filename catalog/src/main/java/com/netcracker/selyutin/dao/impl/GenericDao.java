@@ -20,21 +20,23 @@ public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<
     }
 
     @Transactional
-    public void add(T entity) {
+    public T add(T entity) {
         try {
             entityManager.persist(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return entity;
     }
 
     @Transactional
-    public void update(T entity) {
+    public T update(T entity) {
         try {
             entityManager.merge(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return entity;
     }
 
     @Transactional

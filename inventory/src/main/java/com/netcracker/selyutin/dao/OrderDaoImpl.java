@@ -2,6 +2,7 @@ package com.netcracker.selyutin.dao;
 
 
 import com.netcracker.selyutin.entities.Order;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -17,22 +18,24 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     @Transactional
-    public void add(Order order) {
+    public Order add(Order order) {
         try {
             entityManager.persist(order);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return order;
     }
 
     @Override
     @Transactional
-    public void update(Order order) {
+    public Order update(Order order) {
         try {
             entityManager.merge(order);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return order;
     }
 
     @Override
