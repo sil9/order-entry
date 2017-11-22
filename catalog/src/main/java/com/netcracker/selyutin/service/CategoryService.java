@@ -1,12 +1,11 @@
-package com.netcracker.selyutin.dao;
-
+package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.Category;
 import com.netcracker.selyutin.entity.Offer;
 
 import java.util.List;
 
-public interface CategoryDao extends BaseDao<Category> {
+public interface CategoryService extends BaseService<Category> {
 
     Category findByName(String name);
 
