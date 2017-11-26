@@ -23,9 +23,6 @@ public class CategoryServiceImplTest {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private OfferService offerService;
-
     private Category testCategory;
 
     @Before
