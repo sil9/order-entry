@@ -1,7 +1,9 @@
 package com.netcracker.selyutin.service.impl;
 
 import com.netcracker.selyutin.entity.Category;
+import com.netcracker.selyutin.entity.Offer;
 import com.netcracker.selyutin.service.CategoryService;
+import com.netcracker.selyutin.service.OfferService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,10 @@ public class CategoryServiceImplTest {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private OfferService offerService;
+
     private Category testCategory;
 
     @Before
@@ -35,9 +41,25 @@ public class CategoryServiceImplTest {
     }
 
     @Test
+    public void findOffers() throws Exception {
+        Offer firstOffer = new Offer();
+        firstOffer.setName("first");
+        Offer secondOffer = new Offer();
+        secondOffer.setName("second");
+        secondOffer.setCategory(testCategory);
+        firstOffer.setCategory(testCategory);
+        testCategory.getOffers().add(firstOffer);
+        testCategory.getOffers().add(secondOffer);
+        categoryService.update(testCategory);
+        Category categoryFromDatabase = categoryService.findById(testCategory.getId());
+        assertNotNull(categoryFromDatabase);
+        assertTrue(categoryService.findOffers(testCategory).size() == 2);
+    }
+
+    @Test
     public void findByName() throws Exception {
-        Category category = categoryService.findByName("name");
-        assertNotNull(category);
+        List<Category> categories = categoryService.findByName("name");
+        assertNotNull(categories);
     }
 
     @Test

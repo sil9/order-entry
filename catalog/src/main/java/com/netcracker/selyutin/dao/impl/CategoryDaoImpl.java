@@ -19,16 +19,21 @@ public class CategoryDaoImpl extends GenericDao<Category> implements CategoryDao
     }
 
     @Override
-    public Category findByName(String name) {
-        Category category = null;
+    public Category add(Category entity) {
+        return super.add(entity);
+    }
+
+    @Override
+    public List<Category> findByName(String name) {
+        List<Category> categories = new ArrayList<>();
         Query query = entityManager.createQuery(DatabaseQuery.FIND_CATEGORY_BY_NAME);
         query.setParameter("name", name);
         try {
-            category = (Category) query.getSingleResult();
+            categories = (List<Category>) query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return category;
+        return categories;
     }
 
     @Override

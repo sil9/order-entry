@@ -23,44 +23,37 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        Category categoryFromDatabase = categoryService.findByName(category.getName());
-        if (categoryFromDatabase != null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
         Category createdCategory = categoryService.create(category);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Category> findById(@PathVariable("id") String id) {
-        Category category = categoryService.findById(Integer.parseInt(id));
+    public ResponseEntity<Category> findById(@PathVariable("id") Integer id) {
+        Category category = categoryService.findById(id);
         if (category == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/find/{name}")
-    public ResponseEntity<Category> findByName(@PathVariable("name") String name) {
-        Category category = categoryService.findByName(name);
-        if (category == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(category, HttpStatus.OK);
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<List<Category>> findByName(@PathVariable("name") String name) {
+        List<Category> categories = categoryService.findByName(name);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {
         List<Category> categories = categoryService.findAll();
-        if (categories.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
-        Category categoryFromDatabase = categoryService.findById(category.getId());
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") Integer id, @RequestBody Category category) {
+        if (id != category.getId()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Category categoryFromDatabase = categoryService.findById(id);
         if (categoryFromDatabase == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -68,22 +61,23 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteCategory(@RequestBody Category category) {
-        Category categoryFromDatabase = categoryService.findById(category.getId());
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable("id") Integer id) {
+        Category categoryFromDatabase = categoryService.findById(id);
         if (categoryFromDatabase == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        categoryService.delete(category);
+        categoryService.delete(categoryService.findById(id));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/{id}/offers")
-    public ResponseEntity<List<Offer>> findCategoryOffers(@PathVariable("id") String id) {
-        List<Offer> offers = categoryService.findOffers(categoryService.findById(Integer.parseInt(id)));
-        if (offers.isEmpty()) {
+    public ResponseEntity<List<Offer>> findCategoryOffers(@PathVariable("id") Integer id) {
+        Category category = categoryService.findById(id);
+        if (category.getId() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        List<Offer> offers = categoryService.findOffers(category);
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 }

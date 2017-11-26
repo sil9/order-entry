@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryDao extends BaseDao<Category> {
 
-    Category findByName(String name);
+    List<Category> findByName(String name);
 
     List<Offer> findOffers(Category category);
 

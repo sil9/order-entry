@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 public class Category extends IdentifiedEntity {
 
-    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

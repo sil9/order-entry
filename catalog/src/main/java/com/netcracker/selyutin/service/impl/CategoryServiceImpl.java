@@ -23,7 +23,7 @@ public class CategoryServiceImpl extends GenericService<Category> implements Cat
 
     @Override
     @Transactional(readOnly = true)
-    public Category findByName(String name) {
+    public List<Category> findByName(String name) {
         return categoryDao.findByName(name);
     }
 

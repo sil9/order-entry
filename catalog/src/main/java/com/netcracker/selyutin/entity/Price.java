@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 public class Price extends IdentifiedEntity {
 
-    private long value;
+    private double value;
 
     @OneToOne(mappedBy = "price", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -34,7 +34,7 @@ public class Price extends IdentifiedEntity {
         return Objects.hash(super.hashCode(), value);
     }
 
-    public long getValue() {
+    public double getValue() {
         return value;
     }
 
