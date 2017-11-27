@@ -74,7 +74,7 @@ public class CategoryController {
     @GetMapping(value = "/{id}/offers")
     public ResponseEntity<List<Offer>> findCategoryOffers(@PathVariable("id") Integer id) {
         Category category = categoryService.findById(id);
-        if (category.getId() == 0) {
+        if (category == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Offer> offers = categoryService.findOffers(category);
