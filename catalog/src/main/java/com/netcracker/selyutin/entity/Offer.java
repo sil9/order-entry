@@ -19,7 +19,7 @@ public class Offer extends IdentifiedEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "price_id")
     private Price price;
 

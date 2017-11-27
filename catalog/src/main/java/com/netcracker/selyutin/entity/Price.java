@@ -38,8 +38,16 @@ public class Price extends IdentifiedEntity {
         return value;
     }
 
-    public void setValue(long value) {
+    public Offer getOffer() {
+        return offer;
+    }
+
+    public void setValue(double value) {
         this.value = value;
+    }
+
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     @Override
