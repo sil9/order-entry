@@ -1,17 +1,19 @@
 package com.netcracker.selyutin.entity;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class IdentifiedEntity implements Cloneable, Serializable {
+public abstract class IdentifiedEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private int id;
 
     public IdentifiedEntity() {

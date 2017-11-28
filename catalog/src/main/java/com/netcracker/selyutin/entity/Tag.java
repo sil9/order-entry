@@ -1,6 +1,8 @@
 package com.netcracker.selyutin.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -14,6 +16,7 @@ public class Tag extends IdentifiedEntity {
     private String sign;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Offer> offers = new HashSet<>();
 
     public Tag() {

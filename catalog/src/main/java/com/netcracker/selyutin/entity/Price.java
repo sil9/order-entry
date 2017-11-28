@@ -1,6 +1,8 @@
 package com.netcracker.selyutin.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
@@ -9,9 +11,10 @@ import java.util.Objects;
 @Entity
 public class Price extends IdentifiedEntity {
 
-    private long value;
+    private double value;
 
     @OneToOne(mappedBy = "price", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Offer offer;
 
     public Price() {
@@ -31,7 +34,7 @@ public class Price extends IdentifiedEntity {
         return Objects.hash(super.hashCode(), value);
     }
 
-    public long getValue() {
+    public double getValue() {
         return value;
     }
 

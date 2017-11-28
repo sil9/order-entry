@@ -3,7 +3,6 @@ package com.netcracker.selyutin.dao.impl;
 
 import com.netcracker.selyutin.dao.BaseDao;
 import com.netcracker.selyutin.entity.IdentifiedEntity;
-import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,14 +11,14 @@ import java.util.List;
 public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<T> {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    EntityManager entityManager;
+
     private Class<T> tClass;
 
     GenericDao(Class<T> tClass) {
         this.tClass = tClass;
     }
 
-    @Transactional
     public T add(T entity) {
         try {
             entityManager.persist(entity);
@@ -29,7 +28,6 @@ public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<
         return entity;
     }
 
-    @Transactional
     public T update(T entity) {
         try {
             entityManager.merge(entity);
@@ -39,16 +37,14 @@ public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<
         return entity;
     }
 
-    @Transactional
     public void delete(T entity) {
         try {
-            entityManager.remove(entity);
+            entityManager.remove(getById(entity.getId()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Transactional
     public void delete(int id) {
         T entity = getById(id);
         delete(entity);
