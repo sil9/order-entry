@@ -1,9 +1,8 @@
 package com.netcracker.selyutin.entity;
 
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
@@ -12,8 +11,7 @@ import java.util.Objects;
 public abstract class IdentifiedEntity {
 
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     public IdentifiedEntity() {
