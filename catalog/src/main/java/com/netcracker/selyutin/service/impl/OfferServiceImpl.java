@@ -2,7 +2,6 @@ package com.netcracker.selyutin.service.impl;
 
 import com.netcracker.selyutin.dao.OfferDao;
 import com.netcracker.selyutin.entity.Offer;
-import com.netcracker.selyutin.entity.Tag;
 import com.netcracker.selyutin.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ public class OfferServiceImpl extends GenericService<Offer> implements OfferServ
 
     @Override
     @Transactional(readOnly = true)
-    public List<Offer> findByTag(Tag tag) {
-        return offerDao.findByTag(tag);
+    public List<Offer> findByTag(int id) {
+        return offerDao.findByTag(id);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class OfferController {
     }
 
     @PutMapping(value = "/{id}/availability")
-    public ResponseEntity<Offer> changeAvailability(@PathVariable Integer id, @RequestBody Boolean availability) {
+    public ResponseEntity<Offer> changeAvailability(@PathVariable Integer id, @RequestParam Boolean availability) {
         Offer offer = offerService.findById(id);
         if (offer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -84,13 +84,13 @@ public class OfferController {
          return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/tags")
-    public ResponseEntity<List<Offer>> findByTag(@RequestBody Tag tag) {
-        List<Offer> offers = offerService.findByTag(tag);
+    @GetMapping(value = "/tags/{id}")
+    public ResponseEntity<List<Offer>> findByTag(@RequestParam Integer id) {
+        List<Offer> offers = offerService.findByTag(id);
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/availability")
+    @GetMapping(value = "/?availability=true")
     public ResponseEntity<List<Offer>> findAvailable() {
         List<Offer> offers = offerService.findAvailable();
         return new ResponseEntity<>(offers, HttpStatus.OK);
@@ -109,17 +109,17 @@ public class OfferController {
     }
 
     @PutMapping(value = "/{id}/price")
-    public ResponseEntity<Offer> updatePrice(@PathVariable Integer id, @RequestBody Price price) {
+    public ResponseEntity<Offer> updatePrice(@PathVariable Integer id, @RequestParam Double value) {
         Offer offer = offerService.findById(id);
         if (offer.getId() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        offer.getPrice().setValue(price.getValue());
+        offer.getPrice().setValue(value);
         Offer updatedOffer = offerService.update(offer);
         return new ResponseEntity<>(updatedOffer, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/price/value")
+    @GetMapping(value = "/price")
     public ResponseEntity<List<Offer>> findByPrice(@RequestParam("val1") Double firstValue,
                                                    @RequestParam("val2") Double secondValue) {
         List<Offer> offers = offerService.findByPrice(firstValue, secondValue);
@@ -132,8 +132,8 @@ public class OfferController {
         if (offer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        tagService.create(tag);
         offer.getTags().add(tag);
-        tag.getOffers().add(offer);
         offerService.update(offer);
         return new ResponseEntity<>(offer, HttpStatus.CREATED);
     }
@@ -177,8 +177,8 @@ public class OfferController {
         if (category == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        category.getOffers().remove(offer);
-        categoryService.update(category);
+        offer.setCategory(null);
+        offerService.update(offer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

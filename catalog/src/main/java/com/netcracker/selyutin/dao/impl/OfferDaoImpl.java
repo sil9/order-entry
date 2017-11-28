@@ -4,7 +4,6 @@ package com.netcracker.selyutin.dao.impl;
 import com.netcracker.selyutin.constant.DatabaseQuery;
 import com.netcracker.selyutin.dao.OfferDao;
 import com.netcracker.selyutin.entity.Offer;
-import com.netcracker.selyutin.entity.Tag;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -19,10 +18,10 @@ public class OfferDaoImpl extends GenericDao<Offer> implements OfferDao {
     }
 
     @Override
-    public List<Offer> findByTag(Tag tag) {
+    public List<Offer> findByTag(int id) {
         List<Offer> offers = new ArrayList<>();
         TypedQuery<Offer> query = entityManager.createQuery(DatabaseQuery.FIND_OFFERS_BY_TAG, Offer.class);
-        query.setParameter("tag", tag);
+        query.setParameter("id", id);
         try {
             offers = query.getResultList();
         } catch (Exception e) {
@@ -35,6 +34,7 @@ public class OfferDaoImpl extends GenericDao<Offer> implements OfferDao {
     public List<Offer> findAvailable() {
         List<Offer> offers = new ArrayList<>();
         TypedQuery<Offer> query = entityManager.createQuery(DatabaseQuery.FIND_AVAILABLE_OFFERS, Offer.class);
+        query.setParameter("boolean", true);
         try {
             offers = query.getResultList();
         } catch (Exception e) {
