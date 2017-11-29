@@ -1,11 +1,10 @@
-package com.netcracker.selyutin.dao;
-
+package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.Tag;
 
 import java.util.List;
 
-public interface TagDao extends BaseDao<Tag> {
+public interface TagService extends BaseService<Tag> {
 
     List<Tag> findByName(String name);
 
