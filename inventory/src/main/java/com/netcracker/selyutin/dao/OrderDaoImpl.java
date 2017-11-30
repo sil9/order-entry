@@ -1,12 +1,13 @@
 package com.netcracker.selyutin.dao;
 
 
-import com.netcracker.selyutin.entities.Order;
-import org.aspectj.weaver.ast.Or;
+import com.netcracker.selyutin.constant.DatabaseQuery;
+import com.netcracker.selyutin.entity.Order;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
@@ -17,66 +18,45 @@ public class OrderDaoImpl implements OrderDao {
     private EntityManager entityManager;
 
     @Override
-    @Transactional
     public Order add(Order order) {
-        try {
-            entityManager.persist(order);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        entityManager.persist(order);
         return order;
     }
 
     @Override
-    @Transactional
     public Order update(Order order) {
-        try {
-            entityManager.merge(order);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        entityManager.merge(order);
         return order;
     }
 
     @Override
-    @Transactional
     public void delete(Order order) {
-        try {
-            entityManager.remove(order);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    @Transactional
-    public void delete(int id) {
-        Order order = getById(id);
-        delete(order);
+        entityManager.remove(order);
     }
 
     @Override
     public Order getById(int id) {
-        Order order = null;
-        try {
-            order = entityManager.find(Order.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Order order;
+        order = entityManager.find(Order.class, id);
         return order;
     }
 
     @Override
     public List<Order> getAll() {
-        List<Order> resultList = null;
-        try {
-            CriteriaQuery<Order> criteria = entityManager.getCriteriaBuilder().createQuery(Order.class);
-            criteria.select(criteria.from(Order.class));
-            resultList = entityManager.createQuery(criteria).getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return resultList;
+        List<Order> orders;
+        CriteriaQuery<Order> criteria = entityManager.getCriteriaBuilder().createQuery(Order.class);
+        criteria.select(criteria.from(Order.class));
+        orders = entityManager.createQuery(criteria).getResultList();
+        return orders;
+    }
+
+    @Override
+    public List<Order> getByCustomer(String email) {
+        List<Order> orders;
+        TypedQuery<Order> query = entityManager.createQuery(DatabaseQuery.FIND_ALL_CUSTOMER_ORDERS, Order.class);
+        query.setParameter("email", email);
+        orders = query.getResultList();
+        return orders;
     }
 
 }

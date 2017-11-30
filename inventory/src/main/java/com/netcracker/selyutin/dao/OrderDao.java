@@ -1,7 +1,7 @@
 package com.netcracker.selyutin.dao;
 
 
-import com.netcracker.selyutin.entities.Order;
+import com.netcracker.selyutin.entity.Order;
 import java.util.List;
 
 public interface OrderDao {
@@ -12,9 +12,9 @@ public interface OrderDao {
 
     void delete(Order order);
 
-    void delete(int id);
-
     Order getById(int id);
 
     List<Order> getAll();
+
+    List<Order> getByCustomer(String email);
 }

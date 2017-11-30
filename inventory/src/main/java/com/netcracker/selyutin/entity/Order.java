@@ -1,30 +1,45 @@
-package com.netcracker.selyutin.entities;
+package com.netcracker.selyutin.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity(name = "T_Order")
+@Entity(name = "t_order")
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
     private String name;
+
     private String description;
-    private long totalPrice;
-    private int itemsCount;
+
     private String customerEmail;
-    private LocalDate date;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate creationDate;
+
     private String paymentSign;
 
     @Transient
+    private double totalPrice;
+
+    @Transient
+    private int itemsCount;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
@@ -41,13 +56,13 @@ public class Order {
                 Objects.equals(name, order.name) &&
                 Objects.equals(description, order.description) &&
                 Objects.equals(customerEmail, order.customerEmail) &&
-                Objects.equals(date, order.date) &&
+                Objects.equals(creationDate, order.creationDate) &&
                 Objects.equals(paymentSign, order.paymentSign);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, totalPrice, itemsCount, customerEmail, date, paymentSign);
+        return Objects.hash(id, name, description, totalPrice, itemsCount, customerEmail, creationDate, paymentSign);
     }
 
     public int getId() {
@@ -74,11 +89,11 @@ public class Order {
         this.description = description;
     }
 
-    public long getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(long totalPrice) {
+    public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -98,12 +113,12 @@ public class Order {
         this.customerEmail = customerEmail;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCreationDate(LocalDate date) {
+        this.creationDate = date;
     }
 
     public String getPaymentSign() {
@@ -131,7 +146,7 @@ public class Order {
                 ", totalPrice=" + totalPrice +
                 ", itemsCount=" + itemsCount +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", date=" + date +
+                ", date=" + creationDate +
                 ", paymentSign='" + paymentSign + '\'' +
                 '}';
     }
