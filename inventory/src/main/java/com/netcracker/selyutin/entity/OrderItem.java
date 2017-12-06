@@ -1,10 +1,9 @@
 package com.netcracker.selyutin.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -18,22 +17,12 @@ public class OrderItem {
 
     private double price;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Order order;
+
     public OrderItem() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return id == orderItem.id &&
-                price == orderItem.price &&
-                Objects.equals(name, orderItem.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, price);
     }
 
     public int getId() {
@@ -60,9 +49,18 @@ public class OrderItem {
         this.price = price;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
-        return "OrderItem{" + "id=" + id +
+        return "OrderItem{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 '}';

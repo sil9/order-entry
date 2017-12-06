@@ -1,0 +1,5 @@
+client:
+  url:
+    catalog: http://localhost:8081/api/v1
+    inventory: http://localhost:8082/api/v1
+

@@ -24,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order create(Order order) {
         order.setCreationDate(LocalDate.now());
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
         orderDao.add(order);
         initializeTransientProperties(order);
         return order;
@@ -32,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order update(Order order) {
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
         orderDao.update(order);
         initializeTransientProperties(order);
         return order;
@@ -68,9 +70,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void initializeTransientProperties(Order order) {
-        order.setTotalPrice(order.getOrderItems().stream()
-                .mapToDouble(OrderItem::getPrice)
-                .sum());
-        order.setItemsCount(order.getOrderItems().size());
+        if (order != null) {
+            order.setTotalPrice(order.getOrderItems().stream()
+                    .mapToDouble(OrderItem::getPrice)
+                    .sum());
+            order.setItemsCount(order.getOrderItems().size());
+        }
     }
 }

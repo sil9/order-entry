@@ -1,24 +1,18 @@
 package com.netcracker.selyutin.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-@Entity(name = "t_order")
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Order extends IdentifiedEntity {
 
     private String name;
 
@@ -33,26 +27,36 @@ public class Order {
 
     private String paymentSign;
 
-    private boolean paymentStatus;
+    private boolean paymentStatus;   //true - paid, false unpaid
 
-    @Transient
     private double totalPrice;
 
-    @Transient
     private int itemsCount;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private List<OrderItem> orderItems;
 
     public Order() {
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        if (!super.equals(o)) return false;
+        Order order = (Order) o;
+        return paymentStatus == order.paymentStatus &&
+                Double.compare(order.totalPrice, totalPrice) == 0 &&
+                itemsCount == order.itemsCount &&
+                Objects.equals(name, order.name) &&
+                Objects.equals(description, order.description) &&
+                Objects.equals(customerEmail, order.customerEmail) &&
+                Objects.equals(creationDate, order.creationDate) &&
+                Objects.equals(paymentSign, order.paymentSign);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, description, customerEmail, creationDate, paymentSign, paymentStatus, totalPrice, itemsCount);
     }
 
     public String getName() {
@@ -119,19 +123,18 @@ public class Order {
         this.itemsCount = itemsCount;
     }
 
-    public Set<OrderItem> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(Set<OrderItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", creationDate=" + creationDate +

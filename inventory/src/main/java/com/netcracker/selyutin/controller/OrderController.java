@@ -3,7 +3,6 @@ package com.netcracker.selyutin.controller;
 import com.netcracker.selyutin.entity.Order;
 import com.netcracker.selyutin.entity.OrderItem;
 import com.netcracker.selyutin.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findById(@RequestParam Integer id) {
+    public ResponseEntity<Order> findById(@PathVariable Integer id) {
         Order order = orderService.findById(id);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,12 +48,9 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateCategory(@PathVariable("id") Integer id, @RequestBody Order order) {
-        if (id != order.getId()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Order orderFromDatabase = orderService.findById(id);
+    @PutMapping
+    public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
+        Order orderFromDatabase = orderService.findById(order.getId());
         if (orderFromDatabase == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -74,7 +70,7 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/{id}/orderItems/{orderItemId}")
-    public ResponseEntity<Void> deleteOrderItem(@RequestParam Integer id, @RequestParam Integer orderItemId) {
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable Integer id, @PathVariable Integer orderItemId) {
         Order order = orderService.findById(id);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -93,4 +89,5 @@ public class OrderController {
         orderService.delete(order);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
