@@ -33,6 +33,8 @@ public class Offer extends IdentifiedEntity {
     @JsonIgnore
     private Set<Tag> tags = new HashSet<>();
 
+    private String imageUrl;
+
     public Offer() {
     }
 
@@ -98,6 +100,14 @@ public class Offer extends IdentifiedEntity {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override

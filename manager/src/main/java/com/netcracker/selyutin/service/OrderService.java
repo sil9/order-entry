@@ -1,7 +1,6 @@
 package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.Order;
-import com.netcracker.selyutin.entity.OrderItem;
 import com.netcracker.selyutin.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public interface OrderService {
 
     Order findById(int id) throws EntityNotFoundException;
 
-    Order addOrderItem(int id, OrderItem orderItem) throws EntityNotFoundException, UnsupportedOperationException;
+    Order addOrderItem(int id, Integer offerId) throws EntityNotFoundException, UnsupportedOperationException;
 
     void deleteOrderItem(int id, int orderId) throws EntityNotFoundException;
 

@@ -7,7 +7,7 @@ public abstract class IdentifiedEntity {
 
     private int id;
 
-    IdentifiedEntity() {
+    public IdentifiedEntity() {
     }
 
     @Override

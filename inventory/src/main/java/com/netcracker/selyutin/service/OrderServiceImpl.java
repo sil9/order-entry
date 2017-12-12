@@ -24,7 +24,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order create(Order order) {
         order.setCreationDate(LocalDate.now());
-        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
+        order.getOrderItems().clear();
+        order.setPaymentStatus(false);
         orderDao.add(order);
         initializeTransientProperties(order);
         return order;

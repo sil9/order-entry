@@ -1,9 +1,6 @@
 package com.netcracker.selyutin.controller;
 
-import com.netcracker.selyutin.entity.Category;
-import com.netcracker.selyutin.entity.Offer;
-import com.netcracker.selyutin.entity.Price;
-import com.netcracker.selyutin.entity.Tag;
+import com.netcracker.selyutin.entity.*;
 import com.netcracker.selyutin.service.CategoryService;
 import com.netcracker.selyutin.service.OfferService;
 import com.netcracker.selyutin.service.TagService;
@@ -13,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/offers")
@@ -78,9 +76,9 @@ public class OfferController {
         return new ResponseEntity<>(offer, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Offer>> findAll() {
-         List<Offer> offers = offerService.findAll();
+    @PostMapping(value = "/search")
+    public ResponseEntity<List<Offer>> findAll(@RequestBody Map<String, Object> filters) {
+         List<Offer> offers = offerService.findAllWithFilter(filters);
          return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 

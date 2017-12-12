@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @Autowired
-    OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -29,8 +29,8 @@ public class OrderController {
     }
 
     @PostMapping(value = "/{id}/orderItems")
-    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws EntityNotFoundException {
-        Order order = orderService.addOrderItem(id, orderItem);
+    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestParam Integer offerId) throws EntityNotFoundException {
+        Order order = orderService.addOrderItem(id, offerId);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 

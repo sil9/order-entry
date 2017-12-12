@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OfferServiceImpl extends GenericService<Offer> implements OfferService {
@@ -37,5 +38,11 @@ public class OfferServiceImpl extends GenericService<Offer> implements OfferServ
     @Transactional(readOnly = true)
     public List<Offer> findByPrice(Double firstValue, Double secondValue) {
         return offerDao.getByPrice(firstValue, secondValue);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Offer> findAllWithFilter(Map<String, Object> filters) {
+        return offerDao.getAllWithFilter(filters);
     }
 }

@@ -29,7 +29,7 @@ public class InventoryClient {
     private final RestTemplate restTemplate;
 
     @Autowired
-    InventoryClient(RestTemplate restTemplate) {
+    public InventoryClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

@@ -1,7 +1,9 @@
 package com.netcracker.selyutin.service;
 
+import com.netcracker.selyutin.client.CatalogClient;
 import com.netcracker.selyutin.client.InventoryClient;
 import com.netcracker.selyutin.constant.ExceptionMessage;
+import com.netcracker.selyutin.entity.Offer;
 import com.netcracker.selyutin.entity.Order;
 import com.netcracker.selyutin.entity.OrderItem;
 import com.netcracker.selyutin.exception.EntityNotFoundException;
@@ -15,10 +17,12 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final InventoryClient inventoryClient;
+    private final CatalogClient catalogClient;
 
     @Autowired
-    OrderServiceImpl(InventoryClient inventoryClient) {
+    public OrderServiceImpl(InventoryClient inventoryClient, CatalogClient catalogClient) {
         this.inventoryClient = inventoryClient;
+        this.catalogClient = catalogClient;
     }
 
     @Override
@@ -27,11 +31,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order addOrderItem(int id, OrderItem orderItem) throws EntityNotFoundException {
+    public Order addOrderItem(int id, Integer offerId) throws EntityNotFoundException {
         Order order = findById(id);
         if (order.isPaymentStatus()) {
             throw new UnsupportedOperationException(ExceptionMessage.FAILED_ADD_ITEM_TO_PAID_ORDER);
         } else {
+            Offer offer = catalogClient.findOfferById(offerId);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setName(offer.getName());
+            orderItem.setPrice(offer.getPrice().getValue());
             return inventoryClient.addOrderItem(id, orderItem);
         }
     }
