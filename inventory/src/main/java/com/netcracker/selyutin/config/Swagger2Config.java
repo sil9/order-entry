@@ -14,8 +14,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2Config {
 
-    private static final String TITLE = "Manager REST API";
-    private static final String DESCRIPTION = "RESTful API for manager microservice";
+    private static final String TITLE = "Inventory REST API";
+    private static final String DESCRIPTION = "RESTful API for inventory microservice";
     private static final String SWAGGER_API_VERSION = "1.0";
     private static final String CONTROLLER_PATH = "com.netcracker.selyutin.controller";
 
