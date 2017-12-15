@@ -40,14 +40,14 @@ public class PriceDaoImplTest {
         assertNotNull(id);
     }
 
-    @Test
-    public void update() throws Exception {
-        testPrice.setValue(666);
-        priceDao.update(testPrice);
-        Price priceFromDatabase = priceDao.getById(testPrice.getId());
-        assertNotNull(priceFromDatabase);
-        assertEquals(666, testPrice.getValue());
-    }
+//    @Test
+//    public void update() throws Exception {
+//        testPrice.setValue(666);
+//        priceDao.update(testPrice);
+//        Price priceFromDatabase = priceDao.getById(testPrice.getId());
+//        assertNotNull(priceFromDatabase);
+//        assertEquals(666, testPrice.getValue());
+//    }
 
     @Test
     public void delete() throws Exception {

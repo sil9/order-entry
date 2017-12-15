@@ -1,9 +1,10 @@
 package com.netcracker.selyutin.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,10 +15,13 @@ public class Category extends IdentifiedEntity {
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private Set<Offer> offers = new HashSet<>();
 
     public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
     }
 
     @Override

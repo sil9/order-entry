@@ -1,11 +1,19 @@
 package com.netcracker.selyutin.controller;
 
-import com.netcracker.selyutin.entity.*;
+import com.netcracker.selyutin.dto.CategoryDTO;
+import com.netcracker.selyutin.dto.OfferDTO;
+import com.netcracker.selyutin.dto.TagDTO;
+import com.netcracker.selyutin.entity.Category;
+import com.netcracker.selyutin.entity.Offer;
+import com.netcracker.selyutin.entity.Price;
+import com.netcracker.selyutin.entity.Tag;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.CategoryService;
 import com.netcracker.selyutin.service.OfferService;
 import com.netcracker.selyutin.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/v1/offers")
@@ -22,146 +31,134 @@ public class OfferController {
     private final OfferService offerService;
     private final TagService tagService;
     private final CategoryService categoryService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    OfferController(OfferService offerService, TagService tagService, CategoryService categoryService) {
+    public OfferController(OfferService offerService, TagService tagService, CategoryService categoryService, ModelMapper modelMapper) {
         this.offerService = offerService;
         this.tagService = tagService;
         this.categoryService = categoryService;
+        this.modelMapper = modelMapper;
     }
 
     @ApiOperation(value = "Create offer")
     @PostMapping
-    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
-        Offer createdOffer = offerService.create(offer);
-        return new ResponseEntity<>(createdOffer, HttpStatus.CREATED);
+    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offer) {
+        Offer createdOffer = offerService.create(modelMapper.map(offer, Offer.class));
+        return new ResponseEntity<>(modelMapper.map(createdOffer, OfferDTO.class), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update offer")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Offer> updateOffer(@PathVariable Integer id, @RequestBody Offer offer) {
+    public ResponseEntity<OfferDTO> updateOffer(@PathVariable Integer id, @RequestBody OfferDTO offer) throws EntityNotFoundException {
         if (id != offer.getId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Offer offerFromDatabase = offerService.findById(id);
-        if (offerFromDatabase == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        offerService.update(offer);
+        offerService.update(modelMapper.map(offer, Offer.class));
         return new ResponseEntity<>(offer, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Remove offer by specific id")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteOffer(@PathVariable Integer id) {
-        Offer offerFromDatabase = offerService.findById(id);
-        if (offerFromDatabase == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteOffer(@PathVariable Integer id) throws EntityNotFoundException {
         offerService.delete(offerService.findById(id));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation(value = "Change offer's availability")
     @PutMapping(value = "/{id}/availability")
-    public ResponseEntity<Offer> changeAvailability(@PathVariable Integer id, @RequestParam Boolean availability) {
+    public ResponseEntity<OfferDTO> changeAvailability(@PathVariable Integer id, @RequestParam Boolean availability) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         offer.setAvailability(availability);
         offerService.update(offer);
-        return new ResponseEntity<>(offer, HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(offer, OfferDTO.class), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get offer by specific id")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Offer> findById(@PathVariable Integer id) {
+    public ResponseEntity<OfferDTO> findById(@PathVariable Integer id) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(offer, HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(offer, OfferDTO.class), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get offers with specific parameters")
     @PostMapping(value = "/search")
-    public ResponseEntity<List<Offer>> findAll(@RequestBody Map<String, Object> filters) {
-         List<Offer> offers = offerService.findAllWithFilter(filters);
-         return new ResponseEntity<>(offers, HttpStatus.OK);
+    public ResponseEntity<List<OfferDTO>> findAll(@RequestBody Map<String, Object> filters) {
+        List<Offer> result = offerService.findAllWithFilter(filters);
+        List<OfferDTO> offers = result.stream()
+                .map(offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get offers by specific tag's id")
     @GetMapping(value = "/tags/{id}")
-    public ResponseEntity<List<Offer>> findByTag(@RequestParam Integer id) {
-        List<Offer> offers = offerService.findByTag(id);
+    public ResponseEntity<List<OfferDTO>> findByTag(@RequestParam Integer id) {
+        List<Offer> result = offerService.findByTag(id);
+        List<OfferDTO> offers = result.stream()
+                .map(offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get available offers")
     @GetMapping(value = "/?availability=true")
-    public ResponseEntity<List<Offer>> findAvailable() {
-        List<Offer> offers = offerService.findAvailable();
+    public ResponseEntity<List<OfferDTO>> findAvailable() {
+        List<Offer> result = offerService.findAvailable();
+        List<OfferDTO> offers = result.stream()
+                .map(offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add price to offer")
     @PostMapping(value = "/{id}/price")
-    public ResponseEntity<Offer> addPrice(@PathVariable Integer id, @RequestBody Price price) {
+    public ResponseEntity<OfferDTO> addPrice(@PathVariable Integer id, @RequestParam Double price) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        offer.setPrice(price);
-        price.setOffer(offer);
+        Price price1 = new Price();
+        price1.setValue(price);
+        offer.setPrice(price1);
+        //price.setOffer(offer);
         Offer updatedOffer = offerService.update(offer);
-        return new ResponseEntity<>(updatedOffer, HttpStatus.CREATED);
+        return new ResponseEntity<>(modelMapper.map(updatedOffer, OfferDTO.class), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Change offer's price")
     @PutMapping(value = "/{id}/price")
-    public ResponseEntity<Offer> updatePrice(@PathVariable Integer id, @RequestParam Double value) {
+    public ResponseEntity<OfferDTO> updatePrice(@PathVariable Integer id, @RequestParam Double value) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         offer.getPrice().setValue(value);
         Offer updatedOffer = offerService.update(offer);
-        return new ResponseEntity<>(updatedOffer, HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(updatedOffer, OfferDTO.class), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get offers by range of value")
     @GetMapping(value = "/price")
-    public ResponseEntity<List<Offer>> findByPrice(@RequestParam("val1") Double firstValue,
-                                                   @RequestParam("val2") Double secondValue) {
-        List<Offer> offers = offerService.findByPrice(firstValue, secondValue);
+    public ResponseEntity<List<OfferDTO>> findByPrice(@RequestParam("val1") Double firstValue,
+                                                      @RequestParam("val2") Double secondValue) {
+        List<Offer> result = offerService.findByPrice(firstValue, secondValue);
+        List<OfferDTO> offers = result.stream()
+                .map(offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get offers by range of value")
     @PostMapping(value = "/{id}/tag")
-    public ResponseEntity<Offer> addTag(@PathVariable Integer id ,@RequestBody Tag tag) {
+    public ResponseEntity<OfferDTO> addTag(@PathVariable Integer id, @RequestBody TagDTO tag) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        tagService.create(tag);
-        offer.getTags().add(tag);
+        Tag entityTag = modelMapper.map(tag, Tag.class);
+        tagService.create(entityTag);
+        offer.getTags().add(entityTag);
         offerService.update(offer);
-        return new ResponseEntity<>(offer, HttpStatus.CREATED);
+        return new ResponseEntity<>(modelMapper.map(offer, OfferDTO.class), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Remove tag from offer")
     @DeleteMapping(value = "/{id}/tags/{tagId}")
-    public ResponseEntity<Void> deleteTag(@PathVariable Integer id, @PathVariable Integer tagId) {
+    public ResponseEntity<Void> deleteTag(@PathVariable Integer id, @PathVariable Integer tagId) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Tag tag = tagService.findById(tagId);
-        if (tag == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         offer.getTags().remove(tag);
         tag.getOffers().remove(offer);
         offerService.update(offer);
@@ -171,28 +168,19 @@ public class OfferController {
 
     @ApiOperation(value = "Add offer to category")
     @PostMapping(value = "/{id}/category")
-    public ResponseEntity<Offer> addOfferToCategory(@PathVariable Integer id, @RequestBody Category category) {
+    public ResponseEntity<OfferDTO> addOfferToCategory(@PathVariable Integer id, @RequestBody CategoryDTO category) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        offer.setCategory(category);
-        category.getOffers().add(offer);
-        categoryService.update(category);
-        return new ResponseEntity<>(offer, HttpStatus.CREATED);
+        Category entityCategory = modelMapper.map(category, Category.class);
+        offer.setCategory(entityCategory);
+        entityCategory.getOffers().add(offer);
+        categoryService.update(entityCategory);
+        return new ResponseEntity<>(modelMapper.map(offer, OfferDTO.class), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Remove offer from category")
-    @DeleteMapping(value = "/{id}/category/{categoryId}")
-    public ResponseEntity<Void> deleteOfferFromCategory(@PathVariable Integer id, @PathVariable Integer categoryId) {
+    @DeleteMapping(value = "/{id}/category")
+    public ResponseEntity<Void> deleteOfferFromCategory(@PathVariable Integer id) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        if (offer == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Category category = categoryService.findById(categoryId);
-        if (category == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         offer.setCategory(null);
         offerService.update(offer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

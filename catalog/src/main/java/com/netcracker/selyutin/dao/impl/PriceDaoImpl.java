@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PriceDaoImpl extends GenericDao<Price> implements PriceDao {
 
-    PriceDaoImpl() {
+    public PriceDaoImpl() {
         super(Price.class);
     }
 }

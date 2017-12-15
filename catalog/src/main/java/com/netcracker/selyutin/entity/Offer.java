@@ -1,8 +1,6 @@
 package com.netcracker.selyutin.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,20 +15,19 @@ public class Offer extends IdentifiedEntity {
 
     private boolean availability;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "price_id")
     private Price price;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "offer_tag",
             joinColumns = @JoinColumn(name = "offer_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @JsonIgnore
     private Set<Tag> tags = new HashSet<>();
 
     private String imageUrl;

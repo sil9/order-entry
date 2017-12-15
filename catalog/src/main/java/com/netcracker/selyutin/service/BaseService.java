@@ -1,6 +1,7 @@
 package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.IdentifiedEntity;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public interface BaseService<T extends IdentifiedEntity> {
 
     T update(T entity);
 
-    T findById(int id);
+    T findById(int id) throws EntityNotFoundException;
 
     List<T> findAll();
 
-    void delete(T entity);
+    void delete(T entity) throws EntityNotFoundException;
 
 }

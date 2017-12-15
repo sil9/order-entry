@@ -1,14 +1,10 @@
-package com.netcracker.selyutin.entity;
+package com.netcracker.selyutin.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Offer extends IdentifiedEntity {
+public class OfferDTO {
+
+    private int id;
 
     private String name;
 
@@ -18,30 +14,38 @@ public class Offer extends IdentifiedEntity {
 
     private String categoryName;
 
-    private Double price;
+    private double price;
 
     private String imageUrl;
 
-    public Offer() {
+    public OfferDTO() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Offer)) return false;
-        if (!super.equals(o)) return false;
-        Offer offer = (Offer) o;
-        return availability == offer.availability &&
-                Objects.equals(name, offer.name) &&
-                Objects.equals(description, offer.description) &&
-                Objects.equals(categoryName, offer.categoryName) &&
-                Objects.equals(price, offer.price) &&
-                Objects.equals(imageUrl, offer.imageUrl);
+        if (!(o instanceof OfferDTO)) return false;
+        OfferDTO offerDTO = (OfferDTO) o;
+        return id == offerDTO.id &&
+                availability == offerDTO.availability &&
+                Double.compare(offerDTO.price, price) == 0 &&
+                Objects.equals(name, offerDTO.name) &&
+                Objects.equals(description, offerDTO.description) &&
+                Objects.equals(categoryName, offerDTO.categoryName) &&
+                Objects.equals(imageUrl, offerDTO.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, availability, categoryName, price, imageUrl);
+        return Objects.hash(id, name, description, availability, categoryName, price, imageUrl);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -76,11 +80,11 @@ public class Offer extends IdentifiedEntity {
         this.categoryName = categoryName;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -94,8 +98,8 @@ public class Offer extends IdentifiedEntity {
 
     @Override
     public String toString() {
-        return "Offer{" +
-                "name='" + name + '\'' +
+        return "OfferDTO{" +
+                "id=" + id +
                 ", description='" + description + '\'' +
                 ", availability=" + availability +
                 ", categoryName='" + categoryName + '\'' +

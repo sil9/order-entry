@@ -1,8 +1,6 @@
 package com.netcracker.selyutin.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,7 +16,6 @@ public class Tag extends IdentifiedEntity {
             name = "offer_tag",
             joinColumns = @JoinColumn(name = "tag_id"),
             inverseJoinColumns = @JoinColumn(name = "offer_id"))
-    @JsonIgnore
     private Set<Offer> offers = new HashSet<>();
 
     public Tag() {

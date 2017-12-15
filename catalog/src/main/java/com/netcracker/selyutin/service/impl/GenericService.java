@@ -2,6 +2,7 @@ package com.netcracker.selyutin.service.impl;
 
 import com.netcracker.selyutin.dao.BaseDao;
 import com.netcracker.selyutin.entity.IdentifiedEntity;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public abstract class GenericService<T extends IdentifiedEntity> implements Base
 
     @Override
     @Transactional(readOnly = true)
-    public T findById(int id) {
+    public T findById(int id) throws EntityNotFoundException {
         return dao.getById(id);
     }
 
@@ -43,7 +44,7 @@ public abstract class GenericService<T extends IdentifiedEntity> implements Base
 
     @Override
     @Transactional
-    public void delete(T entity) {
+    public void delete(T entity) throws EntityNotFoundException {
         dao.delete(entity);
     }
 }
