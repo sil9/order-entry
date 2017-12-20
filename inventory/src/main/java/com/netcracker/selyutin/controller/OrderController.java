@@ -2,6 +2,7 @@ package com.netcracker.selyutin.controller;
 
 import com.netcracker.selyutin.entity.Order;
 import com.netcracker.selyutin.entity.OrderItem;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,32 +48,23 @@ public class OrderController {
 
     @ApiOperation(value = "Get order by specific id")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findById(@PathVariable Integer id) {
+    public ResponseEntity<Order> findById(@PathVariable Integer id) throws EntityNotFoundException {
         Order order = orderService.findById(id);
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update order")
     @PutMapping
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
-        Order orderFromDatabase = orderService.findById(order.getId());
-        if (orderFromDatabase == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Order> updateOrder(@RequestBody Order order) throws EntityNotFoundException {
+        orderService.findById(order.getId());
         orderService.update(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add item to order")
     @PostMapping(value = "/{id}/orderItems")
-    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) {
+    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws EntityNotFoundException {
         Order order = orderService.findById(id);
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         order.getOrderItems().add(orderItem);
         orderService.update(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
@@ -80,11 +72,8 @@ public class OrderController {
 
     @ApiOperation(value = "Remove item from order")
     @DeleteMapping(value = "/{id}/orderItems/{orderItemId}")
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable Integer id, @PathVariable Integer orderItemId) {
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable Integer id, @PathVariable Integer orderItemId) throws EntityNotFoundException {
         Order order = orderService.findById(id);
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         order.getOrderItems().removeIf(orderItem -> orderItem.getId() == orderItemId);
         orderService.update(order);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -92,11 +81,8 @@ public class OrderController {
 
     @ApiOperation(value = "Remove order by specific id")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Integer id) throws EntityNotFoundException {
         Order order = orderService.findById(id);
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         orderService.delete(order);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

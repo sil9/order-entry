@@ -23,12 +23,12 @@ public abstract class GenericDao<T extends IdentifiedEntity> implements BaseDao<
 
     public T add(T entity) {
         entityManager.persist(entity);
-        return entity;
+        return entityManager.find(tClass, entity.getId());
     }
 
     public T update(T entity) {
         entityManager.merge(entity);
-        return entity;
+        return entityManager.find(tClass, entity.getId());
     }
 
     public void delete(T entity) throws EntityNotFoundException {

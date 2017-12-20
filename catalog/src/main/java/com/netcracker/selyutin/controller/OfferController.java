@@ -1,6 +1,5 @@
 package com.netcracker.selyutin.controller;
 
-import com.netcracker.selyutin.dto.CategoryDTO;
 import com.netcracker.selyutin.dto.OfferDTO;
 import com.netcracker.selyutin.dto.TagDTO;
 import com.netcracker.selyutin.entity.Category;
@@ -102,7 +101,7 @@ public class OfferController {
     }
 
     @ApiOperation(value = "Get available offers")
-    @GetMapping(value = "/?availability=true")
+    @GetMapping(value = "/getAvailable")
     public ResponseEntity<List<OfferDTO>> findAvailable() {
         List<Offer> result = offerService.findAvailable();
         List<OfferDTO> offers = result.stream()
@@ -143,7 +142,7 @@ public class OfferController {
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get offers by range of value")
+    @ApiOperation(value = "Add tag to offer")
     @PostMapping(value = "/{id}/tag")
     public ResponseEntity<OfferDTO> addTag(@PathVariable Integer id, @RequestBody TagDTO tag) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
@@ -168,9 +167,9 @@ public class OfferController {
 
     @ApiOperation(value = "Add offer to category")
     @PostMapping(value = "/{id}/category")
-    public ResponseEntity<OfferDTO> addOfferToCategory(@PathVariable Integer id, @RequestBody CategoryDTO category) throws EntityNotFoundException {
+    public ResponseEntity<OfferDTO> addOfferToCategory(@PathVariable Integer id, @RequestParam Integer categoryId) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        Category entityCategory = modelMapper.map(category, Category.class);
+        Category entityCategory = categoryService.findById(categoryId);
         offer.setCategory(entityCategory);
         entityCategory.getOffers().add(offer);
         categoryService.update(entityCategory);

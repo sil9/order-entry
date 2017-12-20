@@ -1,6 +1,7 @@
 package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.Order;
+import com.netcracker.selyutin.entity.Status;
 import com.netcracker.selyutin.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -15,13 +16,15 @@ public interface OrderService {
 
     List<Order> findByCustomer(String customerMail);
 
-    List<Order> findCustomerOrdersByPaid(String customerMail, boolean paid);
+    List<Order> findCustomerOrdersByStatus(String customerMail, Status status);
 
     Double getTotalPriceCustomerOrders(String customerMail);
 
     Order payForOrder(int id) throws EntityNotFoundException;
 
-    List<Order> findByPaymentStatus(boolean paymentStatus);
+    List<Order> findByStatus(Status status);
 
     Order creteOrder(Order order);
+
+    void deleteOrder(int id) throws EntityNotFoundException;
 }

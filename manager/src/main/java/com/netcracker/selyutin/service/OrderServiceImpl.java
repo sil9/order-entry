@@ -6,6 +6,7 @@ import com.netcracker.selyutin.constant.ExceptionMessage;
 import com.netcracker.selyutin.entity.Offer;
 import com.netcracker.selyutin.entity.Order;
 import com.netcracker.selyutin.entity.OrderItem;
+import com.netcracker.selyutin.entity.Status;
 import com.netcracker.selyutin.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,13 +34,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order addOrderItem(int id, Integer offerId) throws EntityNotFoundException {
         Order order = findById(id);
-        if (order.isPaymentStatus()) {
-            throw new UnsupportedOperationException(ExceptionMessage.FAILED_ADD_ITEM_TO_PAID_ORDER);
+        Status status = order.getStatus();
+        if (!status.equals(Status.NOT_ACTIVATED)) {
+            throw new UnsupportedOperationException(ExceptionMessage.FAILED_ADD_ITEM_TO_ORDER + status);
         } else {
             Offer offer = catalogClient.findOfferById(offerId);
             OrderItem orderItem = new OrderItem();
             orderItem.setName(offer.getName());
-            orderItem.setPrice(offer.getPrice().getValue());
+            orderItem.setPrice(offer.getPrice());
             return inventoryClient.addOrderItem(id, orderItem);
         }
     }
@@ -47,8 +49,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrderItem(int id, int orderId) throws EntityNotFoundException {
         Order order = findById(id);
-        if (order.isPaymentStatus()) {
-            throw new UnsupportedOperationException(ExceptionMessage.FAILED_DELETE_ITEM_TO_PAID_ORDER);
+        Status status = order.getStatus();
+        if (!status.equals(Status.NOT_ACTIVATED)) {
+            throw new UnsupportedOperationException(ExceptionMessage.FAILED_DELETE_ITEM_FROM_ORDER + status);
         }
         if (order.getOrderItems().stream().anyMatch(item -> item.getId() == orderId)) {
             inventoryClient.deleteOrderItem(id, orderId);
@@ -63,9 +66,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findCustomerOrdersByPaid(String customerMail, boolean paid) {
+    public List<Order> findCustomerOrdersByStatus(String customerMail, Status status) {
         List<Order> orders = findByCustomer(customerMail);
-        return orders.stream().filter(order -> order.isPaymentStatus() == paid).collect(Collectors.toList());
+        return orders.stream().filter(order -> order.getStatus().equals(status)).collect(Collectors.toList());
     }
 
     @Override
@@ -77,25 +80,35 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order payForOrder(int id) throws EntityNotFoundException {
         Order order = findById(id);
-        if (order.isPaymentStatus()) {
-            throw new UnsupportedOperationException(ExceptionMessage.FAILED_PAY_PAID_ORDER);
-        } else {
-            order.setPaymentStatus(true);
+        Status status = order.getStatus();
+        if (status.equals(Status.UNPAID) || status.equals(Status.NOT_ACTIVATED)) {
+            order.setStatus(Status.PAID);
             inventoryClient.updateOrder(order);
             return order;
+        } else {
+            throw new UnsupportedOperationException(ExceptionMessage.FAILED_PAY_ORDER + status);
         }
     }
 
     @Override
-    public List<Order> findByPaymentStatus(boolean paymentStatus) {
+    public List<Order> findByStatus(Status status) {
         List<Order> orders = inventoryClient.findAll();
         return orders.stream()
-                .filter(order -> order.isPaymentStatus() == paymentStatus)
+                .filter(order -> order.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Order creteOrder(Order order) {
         return inventoryClient.createOrder(order);
+    }
+
+    @Override
+    public void deleteOrder(int id) throws EntityNotFoundException {
+        Order order = findById(id);
+        Status status = order.getStatus();
+        if (status.equals(Status.NOT_ACTIVATED)) {
+            inventoryClient.deleteOrder(id);
+        } else throw new UnsupportedOperationException(ExceptionMessage.FAILED_DELETE_ORDER + status);
     }
 }

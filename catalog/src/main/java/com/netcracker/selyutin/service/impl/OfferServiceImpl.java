@@ -16,7 +16,7 @@ public class OfferServiceImpl extends GenericService<Offer> implements OfferServ
     private final OfferDao offerDao;
 
     @Autowired
-    OfferServiceImpl(OfferDao offerDao) {
+    public OfferServiceImpl(OfferDao offerDao) {
         super(offerDao);
         this.offerDao = offerDao;
     }

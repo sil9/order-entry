@@ -2,7 +2,6 @@ package com.netcracker.selyutin.converter;
 
 import com.github.jmnarloch.spring.boot.modelmapper.ConverterConfigurerSupport;
 import com.netcracker.selyutin.dto.OfferDTO;
-import com.netcracker.selyutin.entity.Category;
 import com.netcracker.selyutin.entity.Offer;
 import com.netcracker.selyutin.entity.Price;
 import org.modelmapper.AbstractConverter;
@@ -24,7 +23,6 @@ public class OfferDTOtoOfferMapping extends ConverterConfigurerSupport<OfferDTO,
                 offer.setAvailability(offerDTO.isAvailability());
                 offer.setImageUrl(offerDTO.getImageUrl());
                 offer.setPrice(new Price(offerDTO.getPrice()));
-                offer.setCategory(new Category(offerDTO.getCategoryName()));
                 return offer;
             }
         };

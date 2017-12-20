@@ -1,7 +1,7 @@
 package com.netcracker.selyutin.controller;
 
 import com.netcracker.selyutin.entity.Order;
-import com.netcracker.selyutin.entity.OrderItem;
+import com.netcracker.selyutin.entity.Status;
 import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.OrderService;
 import io.swagger.annotations.Api;
@@ -55,8 +55,8 @@ public class OrderController {
 
     @ApiOperation(value = "Get client's orders by paid status")
     @GetMapping(value = "/customer/{customerMail}")
-    public ResponseEntity<List<Order>> findCustomerOrdersByPaid(@PathVariable String customerMail, @RequestParam Boolean paid) {
-        List<Order> orders = orderService.findCustomerOrdersByPaid(customerMail, paid);
+    public ResponseEntity<List<Order>> findCustomerOrdersByPaid(@PathVariable String customerMail, @RequestParam Status status) {
+        List<Order> orders = orderService.findCustomerOrdersByStatus(customerMail, status);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -76,8 +76,8 @@ public class OrderController {
 
     @ApiOperation(value = "Get orders by payment status")
     @GetMapping(value = "/paymentStatus")
-    public ResponseEntity<List<Order>> findOrdersByPaymentStatus(@RequestParam Boolean paymentStatus) {
-        List<Order> orders = orderService.findByPaymentStatus(paymentStatus);
+    public ResponseEntity<List<Order>> findOrdersByPaymentStatus(@RequestParam Status status) {
+        List<Order> orders = orderService.findByStatus(status);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -88,4 +88,10 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Remove order by specific id")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Integer id) throws EntityNotFoundException {
+        orderService.deleteOrder(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

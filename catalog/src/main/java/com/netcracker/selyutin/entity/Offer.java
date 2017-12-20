@@ -15,7 +15,7 @@ public class Offer extends IdentifiedEntity {
 
     private boolean availability;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -23,7 +23,7 @@ public class Offer extends IdentifiedEntity {
     @JoinColumn(name = "price_id")
     private Price price;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
             name = "offer_tag",
             joinColumns = @JoinColumn(name = "offer_id"),

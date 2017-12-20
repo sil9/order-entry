@@ -23,11 +23,9 @@ public class Order extends IdentifiedEntity {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate creationDate;
+    private LocalDate activeDate;
 
-    private String paymentSign;
-
-    private boolean paymentStatus;   //true - paid, false unpaid
+    private Status status;
 
     private double totalPrice;
 
@@ -44,19 +42,18 @@ public class Order extends IdentifiedEntity {
         if (!(o instanceof Order)) return false;
         if (!super.equals(o)) return false;
         Order order = (Order) o;
-        return paymentStatus == order.paymentStatus &&
-                Double.compare(order.totalPrice, totalPrice) == 0 &&
+        return Double.compare(order.totalPrice, totalPrice) == 0 &&
                 itemsCount == order.itemsCount &&
                 Objects.equals(name, order.name) &&
                 Objects.equals(description, order.description) &&
                 Objects.equals(customerEmail, order.customerEmail) &&
-                Objects.equals(creationDate, order.creationDate) &&
-                Objects.equals(paymentSign, order.paymentSign);
+                Objects.equals(activeDate, order.activeDate) &&
+                status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, customerEmail, creationDate, paymentSign, paymentStatus, totalPrice, itemsCount);
+        return Objects.hash(super.hashCode(), name, description, customerEmail, activeDate, status, totalPrice, itemsCount);
     }
 
     public String getName() {
@@ -83,28 +80,20 @@ public class Order extends IdentifiedEntity {
         this.customerEmail = customerEmail;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public LocalDate getActiveDate() {
+        return activeDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setActiveDate(LocalDate activeDate) {
+        this.activeDate = activeDate;
     }
 
-    public String getPaymentSign() {
-        return paymentSign;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPaymentSign(String paymentSign) {
-        this.paymentSign = paymentSign;
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public double getTotalPrice() {
@@ -137,12 +126,10 @@ public class Order extends IdentifiedEntity {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", creationDate=" + creationDate +
-                ", paymentSign='" + paymentSign + '\'' +
-                ", paymentStatus=" + paymentStatus +
+                ", activeDate=" + activeDate +
+                ", status=" + status +
                 ", totalPrice=" + totalPrice +
                 ", itemsCount=" + itemsCount +
-                ", orderItems=" + orderItems +
                 '}';
     }
 }

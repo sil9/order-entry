@@ -75,4 +75,8 @@ public class InventoryClient {
         ResponseEntity<Order> response = restTemplate.postForEntity(url + "/orders", order, Order.class);
         return response.getBody();
     }
+
+    public void deleteOrder(int id) {
+        restTemplate.delete(url + "/orders/{id}", id);
+    }
 }

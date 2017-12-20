@@ -12,22 +12,20 @@ public abstract class GenericService<T extends IdentifiedEntity> implements Base
 
     private BaseDao<T> dao;
 
-    GenericService(BaseDao<T> dao) {
+    public GenericService(BaseDao<T> dao) {
         this.dao = dao;
     }
 
     @Override
     @Transactional
     public T create(T entity) {
-        dao.add(entity);
-        return entity;
+        return dao.add(entity);
     }
 
     @Override
     @Transactional
     public T update(T entity) {
-        dao.update(entity);
-        return entity;
+        return dao.update(entity);
     }
 
     @Override

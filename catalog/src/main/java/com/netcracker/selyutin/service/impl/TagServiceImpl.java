@@ -15,7 +15,7 @@ public class TagServiceImpl extends GenericService<Tag> implements TagService {
     private final TagDao tagDao;
 
     @Autowired
-    TagServiceImpl(TagDao tagDao) {
+    public TagServiceImpl(TagDao tagDao) {
         super(tagDao);
         this.tagDao = tagDao;
     }

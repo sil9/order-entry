@@ -63,9 +63,9 @@ public class TagController {
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get offers by specific tag")
+    @ApiOperation(value = "Get tags by specific offer")
     @GetMapping(value = "/offers/{id}")
-    public ResponseEntity<List<TagDTO>> findTagOffers(@PathVariable Integer id) {
+    public ResponseEntity<List<TagDTO>> findTagsByOffer(@PathVariable Integer id) {
         List<Tag> result = tagService.findByOffer(id);
         List<TagDTO> tags = result.stream()
                 .map(tag -> modelMapper.map(tag, TagDTO.class))

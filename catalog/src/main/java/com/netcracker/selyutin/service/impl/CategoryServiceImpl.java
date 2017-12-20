@@ -16,7 +16,7 @@ public class CategoryServiceImpl extends GenericService<Category> implements Cat
     private final CategoryDao categoryDao;
 
     @Autowired
-    CategoryServiceImpl(CategoryDao categoryDao) {
+    public CategoryServiceImpl(CategoryDao categoryDao) {
         super(categoryDao);
         this.categoryDao = categoryDao;
     }

@@ -1,6 +1,7 @@
 package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.entity.Order;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface OrderService {
 
     void delete(Order order);
 
-    Order findById(int id);
+    Order findById(int id) throws EntityNotFoundException;
 
     List<Order> findAll();
 

@@ -29,11 +29,10 @@ public class Order {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate creationDate;
+    private LocalDate activeDate;
 
-    private String paymentSign;
-
-    private boolean paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Transient
     private double totalPrice;
@@ -45,6 +44,26 @@ public class Order {
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                Double.compare(order.totalPrice, totalPrice) == 0 &&
+                itemsCount == order.itemsCount &&
+                Objects.equals(name, order.name) &&
+                Objects.equals(description, order.description) &&
+                Objects.equals(customerEmail, order.customerEmail) &&
+                Objects.equals(activeDate, order.activeDate) &&
+                status == order.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, customerEmail, activeDate, status, totalPrice, itemsCount);
     }
 
     public int getId() {
@@ -79,28 +98,20 @@ public class Order {
         this.customerEmail = customerEmail;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public LocalDate getActiveDate() {
+        return activeDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setActiveDate(LocalDate creationDate) {
+        this.activeDate = creationDate;
     }
 
-    public String getPaymentSign() {
-        return paymentSign;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPaymentSign(String paymentSign) {
-        this.paymentSign = paymentSign;
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public double getTotalPrice() {
@@ -134,12 +145,10 @@ public class Order {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", creationDate=" + creationDate +
-                ", paymentSign='" + paymentSign + '\'' +
-                ", paymentStatus=" + paymentStatus +
+                ", creationDate=" + activeDate +
+                ", status=" + status +
                 ", totalPrice=" + totalPrice +
                 ", itemsCount=" + itemsCount +
-                ", orderItems=" + orderItems +
                 '}';
     }
 }
