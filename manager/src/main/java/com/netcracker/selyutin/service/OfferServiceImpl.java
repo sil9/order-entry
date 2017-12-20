@@ -1,7 +1,10 @@
 package com.netcracker.selyutin.service;
 
 import com.netcracker.selyutin.client.CatalogClient;
+import com.netcracker.selyutin.constant.LoggerConstant;
 import com.netcracker.selyutin.entity.Offer;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,8 @@ import java.util.Map;
 
 @Service
 public class OfferServiceImpl implements OfferService {
+
+    private static final Logger LOGGER = LogManager.getLogger(OfferServiceImpl.class);
 
     private final CatalogClient catalogClient;
 
@@ -20,6 +25,10 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public List<Offer> findWithFilter(Map<String, Object> params) {
-        return catalogClient.findAllOffer(params);
+        LOGGER.info("Start search offers with filter");
+        List<Offer> offers = catalogClient.findAllOffer(params);
+        LOGGER.info(LoggerConstant.REQUEST_SUCCESSFUL);
+        LOGGER.info(offers);
+        return offers;
     }
 }

@@ -3,12 +3,15 @@ package com.netcracker.selyutin.dao;
 
 import com.netcracker.selyutin.constant.DatabaseQuery;
 import com.netcracker.selyutin.entity.Order;
+import com.netcracker.selyutin.entity.Status;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -57,6 +60,19 @@ public class OrderDaoImpl implements OrderDao {
         query.setParameter("email", email);
         orders = query.getResultList();
         return orders;
+    }
+
+    @Override
+    public void changeOrderStatus(LocalDate date, Status previousStatus, Status futureStatus) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Order> updateCriteria = criteriaBuilder.createCriteriaUpdate(Order.class);
+        Root<Order> root = updateCriteria.from(Order.class);
+        updateCriteria.set(root.get("status"), futureStatus);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(criteriaBuilder.equal(root.get("status"), previousStatus));
+        predicates.add(criteriaBuilder.lessThan(root.get("activeDate"), date));
+        updateCriteria.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+        entityManager.createQuery(updateCriteria).executeUpdate();
     }
 
 }

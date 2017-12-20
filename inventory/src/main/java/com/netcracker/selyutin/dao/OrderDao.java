@@ -2,6 +2,9 @@ package com.netcracker.selyutin.dao;
 
 
 import com.netcracker.selyutin.entity.Order;
+import com.netcracker.selyutin.entity.Status;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderDao {
@@ -17,4 +20,6 @@ public interface OrderDao {
     List<Order> getAll();
 
     List<Order> getByCustomer(String email);
+
+    void changeOrderStatus(LocalDate date, Status previousStatus, Status futureStatus);
 }
