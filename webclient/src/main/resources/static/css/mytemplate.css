@@ -1,0 +1,19 @@
+body {
+    padding-top: 40px;
+}
+
+#emailform {
+    padding-left: 200px;
+}
+
+#item_order {
+    height: 430px;
+}
+
+#item_order_description {
+    height: 50px;
+}
+
+#offerDescription {
+    font-size: large;
+}

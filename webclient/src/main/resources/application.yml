@@ -1,0 +1,6 @@
+client:
+  url:
+    category: http://localhost:8090/catalog/api/v1/categories
+    offer: http://localhost:8090/catalog/api/v1/offers
+    tag: http://localhost:8090/catalog/api/v1/tags
+    order: http://localhost:8090/manager/api/v1/orders
