@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -44,14 +45,14 @@ public class OfferController {
 
     @ApiOperation(value = "Create offer")
     @PostMapping
-    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offer) {
+    public ResponseEntity<OfferDTO> createOffer(@RequestBody @Valid OfferDTO offer) {
         Offer createdOffer = offerService.create(modelMapper.map(offer, Offer.class));
         return new ResponseEntity<>(modelMapper.map(createdOffer, OfferDTO.class), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update offer")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<OfferDTO> updateOffer(@PathVariable Integer id, @RequestBody OfferDTO offer) throws EntityNotFoundException {
+    public ResponseEntity<OfferDTO> updateOffer(@PathVariable Integer id, @RequestBody @Valid OfferDTO offer) throws EntityNotFoundException {
         if (id != offer.getId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

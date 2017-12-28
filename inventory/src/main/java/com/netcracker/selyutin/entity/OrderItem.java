@@ -4,6 +4,7 @@ package com.netcracker.selyutin.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class OrderItem {
@@ -12,8 +13,10 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private double price;
 
     @ManyToOne

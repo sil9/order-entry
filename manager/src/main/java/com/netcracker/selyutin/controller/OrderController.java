@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class OrderController {
 
     @ApiOperation(value = "Create order")
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
         Order returnedOrder = orderService.creteOrder(order);
         return new ResponseEntity<>(returnedOrder, HttpStatus.CREATED);
     }

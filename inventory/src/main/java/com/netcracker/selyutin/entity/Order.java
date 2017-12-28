@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,10 +22,13 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String description;
 
+    @Email
     private String customerEmail;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

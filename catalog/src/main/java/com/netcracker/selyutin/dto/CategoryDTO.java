@@ -1,11 +1,13 @@
 package com.netcracker.selyutin.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class CategoryDTO {
 
     private int id;
 
+    @NotNull
     private String name;
 
     public CategoryDTO() {

@@ -3,12 +3,14 @@ package com.netcracker.selyutin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Category extends IdentifiedEntity {
 
+    @NotNull
     private String name;
 
     public Category() {

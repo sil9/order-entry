@@ -6,11 +6,13 @@ import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ public class OrderController {
 
     @ApiOperation(value = "Create order")
     @PostMapping
-    public ResponseEntity<Order> create(@RequestBody Order order) {
+    public ResponseEntity<Order> create(@RequestBody @Valid Order order) {
         Order createdOrder = orderService.create(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
@@ -55,7 +57,7 @@ public class OrderController {
 
     @ApiOperation(value = "Update order")
     @PutMapping
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order) throws EntityNotFoundException {
+    public ResponseEntity<Order> updateOrder(@RequestBody @Valid Order order) throws EntityNotFoundException {
         orderService.findById(order.getId());
         orderService.update(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
@@ -63,7 +65,7 @@ public class OrderController {
 
     @ApiOperation(value = "Add item to order")
     @PostMapping(value = "/{id}/orderItems")
-    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws EntityNotFoundException {
+    public ResponseEntity<Order> addOrderItem(@PathVariable Integer id, @RequestBody @Valid OrderItem orderItem) throws EntityNotFoundException {
         Order order = orderService.findById(id);
         order.getOrderItems().add(orderItem);
         orderService.update(order);

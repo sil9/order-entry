@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class TagController {
 
     @ApiOperation(value = "Create tag")
     @PostMapping
-    public ResponseEntity<TagDTO> createTag(@RequestBody TagDTO tag) {
+    public ResponseEntity<TagDTO> createTag(@RequestBody @Valid TagDTO tag) {
         Tag createdTag = tagService.create(modelMapper.map(tag, Tag.class));
         return new ResponseEntity<>(modelMapper.map(createdTag, TagDTO.class), HttpStatus.CREATED);
     }
@@ -75,7 +76,7 @@ public class TagController {
 
     @ApiOperation(value = "Update tag")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<TagDTO> updateTag(@PathVariable("id") Integer id, @RequestBody TagDTO tag) throws EntityNotFoundException {
+    public ResponseEntity<TagDTO> updateTag(@PathVariable("id") Integer id, @RequestBody @Valid TagDTO tag) throws EntityNotFoundException {
         if (id != tag.getId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

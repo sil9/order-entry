@@ -3,11 +3,13 @@ package com.netcracker.selyutin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Price extends IdentifiedEntity {
 
+    @NotNull
     private double value;
 
     public Price() {

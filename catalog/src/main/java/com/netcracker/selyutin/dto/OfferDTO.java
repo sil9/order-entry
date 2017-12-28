@@ -1,23 +1,30 @@
 package com.netcracker.selyutin.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class OfferDTO {
 
     private int id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private String fullDescription;
 
+    @NotNull
     private boolean availability;
 
     private String categoryName;
 
+    @NotNull
     private double price;
 
+    @NotNull
     private String imageUrl;
 
     public OfferDTO() {

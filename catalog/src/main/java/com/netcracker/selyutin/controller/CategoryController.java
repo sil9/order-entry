@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Create category")
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO category) {
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO category) {
         Category createdCategory = categoryService.create(modelMapper.map(category, Category.class));
         return new ResponseEntity<>(modelMapper.map(createdCategory, CategoryDTO.class), HttpStatus.CREATED);
     }
@@ -67,7 +68,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Update category")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDTO category) throws EntityNotFoundException {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") Integer id, @RequestBody @Valid CategoryDTO category) throws EntityNotFoundException {
         if (id != category.getId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

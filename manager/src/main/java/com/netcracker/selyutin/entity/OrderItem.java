@@ -2,13 +2,16 @@ package com.netcracker.selyutin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderItem extends IdentifiedEntity {
 
+    @NotNull
     private String name;
 
+    @NotNull
     private double price;
 
     public OrderItem() {

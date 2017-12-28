@@ -3,23 +3,30 @@ package com.netcracker.selyutin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Offer extends IdentifiedEntity {
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private String fullDescription;
 
+    @NotNull
     private boolean availability;
 
     private String categoryName;
 
+    @NotNull
     private Double price;
 
+    @NotNull
     private String imageUrl;
 
     public Offer() {

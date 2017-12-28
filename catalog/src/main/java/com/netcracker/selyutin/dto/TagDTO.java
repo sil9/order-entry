@@ -1,11 +1,13 @@
 package com.netcracker.selyutin.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class TagDTO {
 
     private int id;
 
+    @NotNull
     private String sign;
 
     public TagDTO() {
