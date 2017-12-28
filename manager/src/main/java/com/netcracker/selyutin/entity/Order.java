@@ -23,7 +23,7 @@ public class Order extends IdentifiedEntity {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate activeDate;
+    private LocalDate expirationDate;
 
     private Status status;
 
@@ -47,13 +47,13 @@ public class Order extends IdentifiedEntity {
                 Objects.equals(name, order.name) &&
                 Objects.equals(description, order.description) &&
                 Objects.equals(customerEmail, order.customerEmail) &&
-                Objects.equals(activeDate, order.activeDate) &&
+                Objects.equals(expirationDate, order.expirationDate) &&
                 status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, customerEmail, activeDate, status, totalPrice, itemsCount);
+        return Objects.hash(super.hashCode(), name, description, customerEmail, expirationDate, status, totalPrice, itemsCount);
     }
 
     public String getName() {
@@ -80,12 +80,12 @@ public class Order extends IdentifiedEntity {
         this.customerEmail = customerEmail;
     }
 
-    public LocalDate getActiveDate() {
-        return activeDate;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setActiveDate(LocalDate activeDate) {
-        this.activeDate = activeDate;
+    public void setExpirationDate(LocalDate activeDate) {
+        this.expirationDate = activeDate;
     }
 
     public Status getStatus() {
@@ -126,7 +126,7 @@ public class Order extends IdentifiedEntity {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", activeDate=" + activeDate +
+                ", expirationDate=" + expirationDate +
                 ", status=" + status +
                 ", totalPrice=" + totalPrice +
                 ", itemsCount=" + itemsCount +

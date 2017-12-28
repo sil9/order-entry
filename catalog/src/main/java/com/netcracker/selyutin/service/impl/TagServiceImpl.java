@@ -3,6 +3,7 @@ package com.netcracker.selyutin.service.impl;
 import com.netcracker.selyutin.constant.LoggerConstant;
 import com.netcracker.selyutin.dao.TagDao;
 import com.netcracker.selyutin.entity.Tag;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.TagService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -43,5 +44,13 @@ public class TagServiceImpl extends GenericService<Tag> implements TagService {
         LOGGER.info(LoggerConstant.TRANSACTION_SUCCEEDED);
         LOGGER.info(tags);
         return tags;
+    }
+
+    @Override
+    @Transactional
+    public Tag update(Tag entity) throws EntityNotFoundException {
+        Tag tag = tagDao.getById(entity.getId());
+        entity.setOffers(tag.getOffers());
+        return super.update(entity);
     }
 }

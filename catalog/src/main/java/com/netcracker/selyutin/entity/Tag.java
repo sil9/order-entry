@@ -11,7 +11,7 @@ public class Tag extends IdentifiedEntity {
 
     private String sign;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "offer_tag",
             joinColumns = @JoinColumn(name = "tag_id"),

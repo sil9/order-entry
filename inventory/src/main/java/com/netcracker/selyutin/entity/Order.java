@@ -29,7 +29,7 @@ public class Order {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate activeDate;
+    private LocalDate expirationDate;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -57,13 +57,13 @@ public class Order {
                 Objects.equals(name, order.name) &&
                 Objects.equals(description, order.description) &&
                 Objects.equals(customerEmail, order.customerEmail) &&
-                Objects.equals(activeDate, order.activeDate) &&
+                Objects.equals(expirationDate, order.expirationDate) &&
                 status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, customerEmail, activeDate, status, totalPrice, itemsCount);
+        return Objects.hash(id, name, description, customerEmail, expirationDate, status, totalPrice, itemsCount);
     }
 
     public int getId() {
@@ -98,12 +98,12 @@ public class Order {
         this.customerEmail = customerEmail;
     }
 
-    public LocalDate getActiveDate() {
-        return activeDate;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setActiveDate(LocalDate creationDate) {
-        this.activeDate = creationDate;
+    public void setExpirationDate(LocalDate creationDate) {
+        this.expirationDate = creationDate;
     }
 
     public Status getStatus() {
@@ -145,7 +145,7 @@ public class Order {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", creationDate=" + activeDate +
+                ", creationDate=" + expirationDate +
                 ", status=" + status +
                 ", totalPrice=" + totalPrice +
                 ", itemsCount=" + itemsCount +

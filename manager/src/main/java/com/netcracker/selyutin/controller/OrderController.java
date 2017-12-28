@@ -54,8 +54,8 @@ public class OrderController {
     }
 
     @ApiOperation(value = "Get client's orders by paid status")
-    @GetMapping(value = "/customer/{customerMail}")
-    public ResponseEntity<List<Order>> findCustomerOrdersByPaid(@PathVariable String customerMail, @RequestParam Status status) {
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Order>> findCustomerOrdersByPaid(@RequestParam String customerMail, @RequestParam Status status) {
         List<Order> orders = orderService.findCustomerOrdersByStatus(customerMail, status);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
@@ -72,13 +72,6 @@ public class OrderController {
     public ResponseEntity<Order> payForOrder(@PathVariable Integer id) throws EntityNotFoundException {
         Order order = orderService.payForOrder(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Get orders by payment status")
-    @GetMapping(value = "/paymentStatus")
-    public ResponseEntity<List<Order>> findOrdersByPaymentStatus(@RequestParam Status status) {
-        List<Order> orders = orderService.findByStatus(status);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get order by specific id")

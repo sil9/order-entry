@@ -10,6 +10,8 @@ public class OfferDTO {
 
     private String description;
 
+    private String fullDescription;
+
     private boolean availability;
 
     private String categoryName;
@@ -31,13 +33,14 @@ public class OfferDTO {
                 Double.compare(offerDTO.price, price) == 0 &&
                 Objects.equals(name, offerDTO.name) &&
                 Objects.equals(description, offerDTO.description) &&
+                Objects.equals(fullDescription, offerDTO.fullDescription) &&
                 Objects.equals(categoryName, offerDTO.categoryName) &&
                 Objects.equals(imageUrl, offerDTO.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, availability, categoryName, price, imageUrl);
+        return Objects.hash(id, name, description, fullDescription, availability, categoryName, price, imageUrl);
     }
 
     public int getId() {
@@ -62,6 +65,14 @@ public class OfferDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFullDescription() {
+        return fullDescription;
+    }
+
+    public void setFullDescription(String fullDescription) {
+        this.fullDescription = fullDescription;
     }
 
     public boolean isAvailability() {
@@ -100,7 +111,9 @@ public class OfferDTO {
     public String toString() {
         return "OfferDTO{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", fullDescription='" + fullDescription + '\'' +
                 ", availability=" + availability +
                 ", categoryName='" + categoryName + '\'' +
                 ", price=" + price +

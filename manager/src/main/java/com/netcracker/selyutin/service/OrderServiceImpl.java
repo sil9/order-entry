@@ -108,9 +108,12 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("Pay order");
         Order order = findById(id);
         Status status = order.getStatus();
+        if (order.getOrderItems() == null) {
+            throw new UnsupportedOperationException("Can not pay order without items");
+        }
         if (status.equals(Status.UNPAID) || status.equals(Status.NOT_ACTIVATED)) {
             order.setStatus(Status.PAID);
-            order.setActiveDate(LocalDate.now().plusDays(30));
+            order.setExpirationDate(LocalDate.now().plusDays(30));
             inventoryClient.updateOrder(order);
             LOGGER.info(LoggerConstant.REQUEST_SUCCESSFUL);
             return order;

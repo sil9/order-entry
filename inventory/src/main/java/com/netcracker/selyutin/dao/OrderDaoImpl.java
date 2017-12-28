@@ -70,7 +70,7 @@ public class OrderDaoImpl implements OrderDao {
         updateCriteria.set(root.get("status"), futureStatus);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.equal(root.get("status"), previousStatus));
-        predicates.add(criteriaBuilder.lessThan(root.get("activeDate"), date));
+        predicates.add(criteriaBuilder.lessThan(root.get("expirationDate"), date));
         updateCriteria.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
         entityManager.createQuery(updateCriteria).executeUpdate();
     }

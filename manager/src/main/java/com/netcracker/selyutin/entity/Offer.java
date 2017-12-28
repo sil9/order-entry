@@ -3,9 +3,7 @@ package com.netcracker.selyutin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Offer extends IdentifiedEntity {
@@ -13,6 +11,8 @@ public class Offer extends IdentifiedEntity {
     private String name;
 
     private String description;
+
+    private String fullDescription;
 
     private boolean availability;
 
@@ -34,6 +34,7 @@ public class Offer extends IdentifiedEntity {
         return availability == offer.availability &&
                 Objects.equals(name, offer.name) &&
                 Objects.equals(description, offer.description) &&
+                Objects.equals(fullDescription, offer.fullDescription) &&
                 Objects.equals(categoryName, offer.categoryName) &&
                 Objects.equals(price, offer.price) &&
                 Objects.equals(imageUrl, offer.imageUrl);
@@ -41,7 +42,7 @@ public class Offer extends IdentifiedEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, availability, categoryName, price, imageUrl);
+        return Objects.hash(super.hashCode(), name, description, fullDescription, availability, categoryName, price, imageUrl);
     }
 
     public String getName() {
@@ -58,6 +59,14 @@ public class Offer extends IdentifiedEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFullDescription() {
+        return fullDescription;
+    }
+
+    public void setFullDescription(String fullDescription) {
+        this.fullDescription = fullDescription;
     }
 
     public boolean isAvailability() {
@@ -97,6 +106,7 @@ public class Offer extends IdentifiedEntity {
         return "Offer{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", fullDescription='" + fullDescription + '\'' +
                 ", availability=" + availability +
                 ", categoryName='" + categoryName + '\'' +
                 ", price=" + price +

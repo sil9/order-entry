@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,7 +55,7 @@ public class OfferController {
         if (id != offer.getId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        offerService.update(modelMapper.map(offer, Offer.class));
+            offerService.update(modelMapper.map(offer, Offer.class));
         return new ResponseEntity<>(offer, HttpStatus.OK);
     }
 
@@ -82,7 +84,7 @@ public class OfferController {
 
     @ApiOperation(value = "Get offers with specific parameters")
     @PostMapping(value = "/search")
-    public ResponseEntity<List<OfferDTO>> findAll(@RequestBody Map<String, Object> filters) {
+    public ResponseEntity<?> findAll(@RequestBody Map<String, Object> filters) {
         List<Offer> result = offerService.findAllWithFilter(filters);
         List<OfferDTO> offers = result.stream()
                 .map(offer -> modelMapper.map(offer, OfferDTO.class))
@@ -143,12 +145,11 @@ public class OfferController {
     }
 
     @ApiOperation(value = "Add tag to offer")
-    @PostMapping(value = "/{id}/tag")
-    public ResponseEntity<OfferDTO> addTag(@PathVariable Integer id, @RequestBody TagDTO tag) throws EntityNotFoundException {
+    @PostMapping(value = "/{id}/tags/{tagId}")
+    public ResponseEntity<OfferDTO> addTag(@PathVariable Integer id, @PathVariable Integer tagId) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
-        Tag entityTag = modelMapper.map(tag, Tag.class);
-        tagService.create(entityTag);
-        offer.getTags().add(entityTag);
+        Tag tag = tagService.findById(tagId);
+        offer.getTags().add(tag);
         offerService.update(offer);
         return new ResponseEntity<>(modelMapper.map(offer, OfferDTO.class), HttpStatus.CREATED);
     }
@@ -166,8 +167,8 @@ public class OfferController {
     }
 
     @ApiOperation(value = "Add offer to category")
-    @PostMapping(value = "/{id}/category")
-    public ResponseEntity<OfferDTO> addOfferToCategory(@PathVariable Integer id, @RequestParam Integer categoryId) throws EntityNotFoundException {
+    @PostMapping(value = "/{id}/category/{categoryId}")
+    public ResponseEntity<OfferDTO> addOfferToCategory(@PathVariable Integer id, @PathVariable Integer categoryId) throws EntityNotFoundException {
         Offer offer = offerService.findById(id);
         Category entityCategory = categoryService.findById(categoryId);
         offer.setCategory(entityCategory);

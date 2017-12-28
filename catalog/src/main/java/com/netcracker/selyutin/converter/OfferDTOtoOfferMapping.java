@@ -23,6 +23,7 @@ public class OfferDTOtoOfferMapping extends ConverterConfigurerSupport<OfferDTO,
                 offer.setAvailability(offerDTO.isAvailability());
                 offer.setImageUrl(offerDTO.getImageUrl());
                 offer.setPrice(new Price(offerDTO.getPrice()));
+                offer.setFullDescription(offerDTO.getFullDescription());
                 return offer;
             }
         };

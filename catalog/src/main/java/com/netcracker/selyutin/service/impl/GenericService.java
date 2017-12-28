@@ -33,7 +33,7 @@ public abstract class GenericService<T extends IdentifiedEntity> implements Base
 
     @Override
     @Transactional
-    public T update(T entity) {
+    public T update(T entity) throws EntityNotFoundException {
         LOGGER.info("Started updating the entity in the database");
         T object = dao.update(entity);
         LOGGER.info(LoggerConstant.TRANSACTION_SUCCEEDED);

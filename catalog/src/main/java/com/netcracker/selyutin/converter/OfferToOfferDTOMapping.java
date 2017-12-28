@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfferToOfferDTOMapping extends ConverterConfigurerSupport<Offer, OfferDTO> {
 
-
     @Override
     protected Converter<Offer, OfferDTO> converter() {
         return new AbstractConverter<Offer, OfferDTO>() {
@@ -22,11 +21,14 @@ public class OfferToOfferDTOMapping extends ConverterConfigurerSupport<Offer, Of
                 offerDTO.setName(offer.getName());
                 offerDTO.setDescription(offer.getDescription());
                 offerDTO.setAvailability(offer.isAvailability());
+                offerDTO.setFullDescription(offer.getFullDescription());
                 Category categoryName = offer.getCategory();
                 if (categoryName != null) {
                     offerDTO.setCategoryName(categoryName.getName());
                 }
-                offerDTO.setPrice(offer.getPrice().getValue());
+                if (offer.getPrice() != null) {
+                    offerDTO.setPrice(offer.getPrice().getValue());
+                }
                 offerDTO.setImageUrl(offer.getImageUrl());
                 return offerDTO;
             }

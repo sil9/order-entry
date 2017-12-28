@@ -62,6 +62,17 @@ public class OfferDaoImpl extends GenericDao<Offer> implements OfferDao {
             Predicate predicate = criteriaBuilder.equal(offerRoot.get("category").get("name"), categoryName.toString());
             predicates.add(predicate);
         }
+        Object availability = filters.get("availability");
+        if (availability != null) {
+            boolean filter = Boolean.parseBoolean(availability.toString());
+            if (filter) {
+                Predicate predicate = criteriaBuilder.isTrue(offerRoot.get("availability"));
+                predicates.add(predicate);
+            } else {
+                Predicate predicate = criteriaBuilder.isFalse(offerRoot.get("availability"));
+                predicates.add(predicate);
+            }
+        }
         List<String> tagsNames = (List<String>) filters.get("tagName");
         if (tagsNames != null) {
             Join t = offerRoot.join("tags", JoinType.LEFT);

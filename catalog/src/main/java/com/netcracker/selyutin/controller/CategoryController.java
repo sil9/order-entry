@@ -46,8 +46,8 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "Get categories by specific name")
-    @GetMapping(value = "/name/{name}")
-    public ResponseEntity<List<CategoryDTO>> findByName(@PathVariable("name") String name) {
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<CategoryDTO>> findByName(@RequestParam("name") String name) {
         List<Category> result = categoryService.findByName(name);
         List<CategoryDTO> categories = result.stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))

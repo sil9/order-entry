@@ -9,7 +9,7 @@ public interface BaseService<T extends IdentifiedEntity> {
 
     T create(T entity);
 
-    T update(T entity);
+    T update(T entity) throws EntityNotFoundException;
 
     T findById(int id) throws EntityNotFoundException;
 

@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     public Order create(Order order) {
         LOGGER.info("Start creating the order");
         order.getOrderItems().clear();
-        order.setActiveDate(null);
+        order.setExpirationDate(null);
         order.setStatus(Status.NOT_ACTIVATED);
         Order object = orderDao.add(order);
         initializeTransientProperties(object);

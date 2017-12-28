@@ -13,6 +13,8 @@ public class Offer extends IdentifiedEntity {
 
     private String description;
 
+    private String fullDescription;
+
     private boolean availability;
 
     @ManyToOne
@@ -43,12 +45,22 @@ public class Offer extends IdentifiedEntity {
         Offer offer = (Offer) o;
         return availability == offer.availability &&
                 Objects.equals(name, offer.name) &&
-                Objects.equals(description, offer.description);
+                Objects.equals(description, offer.description) &&
+                Objects.equals(fullDescription, offer.fullDescription) &&
+                Objects.equals(imageUrl, offer.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, availability);
+        return Objects.hash(super.hashCode(), name, description, fullDescription, availability, imageUrl);
+    }
+
+    public String getFullDescription() {
+        return fullDescription;
+    }
+
+    public void setFullDescription(String fullDescription) {
+        this.fullDescription = fullDescription;
     }
 
     public String getName() {
@@ -109,9 +121,13 @@ public class Offer extends IdentifiedEntity {
 
     @Override
     public String toString() {
-        return "Offer{" + "name='" + name + '\'' +
+        return "Offer{" +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", fullDescription='" + fullDescription + '\'' +
                 ", availability=" + availability +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
+
 }

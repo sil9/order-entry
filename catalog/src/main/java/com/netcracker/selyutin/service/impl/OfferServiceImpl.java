@@ -3,6 +3,7 @@ package com.netcracker.selyutin.service.impl;
 import com.netcracker.selyutin.constant.LoggerConstant;
 import com.netcracker.selyutin.dao.OfferDao;
 import com.netcracker.selyutin.entity.Offer;
+import com.netcracker.selyutin.exception.EntityNotFoundException;
 import com.netcracker.selyutin.service.OfferService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -65,5 +66,14 @@ public class OfferServiceImpl extends GenericService<Offer> implements OfferServ
         LOGGER.info(LoggerConstant.TRANSACTION_SUCCEEDED);
         LOGGER.info(offers);
         return offers;
+    }
+
+    @Override
+    @Transactional
+    public Offer update(Offer entity) throws EntityNotFoundException {
+        Offer offer = offerDao.getById(entity.getId());
+        entity.getPrice().setId(offer.getPrice().getId());
+        entity.setTags(offer.getTags());
+        return offerDao.update(entity);
     }
 }
