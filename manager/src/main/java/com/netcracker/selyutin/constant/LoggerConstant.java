@@ -1,8 +1,6 @@
 package com.netcracker.selyutin.constant;
 
-public class LoggerConstant {
+public interface LoggerConstant {
 
-    public static final String REQUEST_SUCCESSFUL = "the request was successful";
-
-    private LoggerConstant() {}
+    String REQUEST_SUCCESSFUL = "the request was successful";
 }
